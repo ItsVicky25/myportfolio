@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects</title>
+    <link href="https://db.onlinewebfonts.com/c/59a2ec451d6c057f39dbf6c66ce60959?family=brushield+Italic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Dancing+Script:wght@400;600;700&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <link rel="stylesheet" href="vertical-navbar.css">
+    <style>
+        /* ======================== */
+        /* GLOBAL RESET & BASE STYLES */
+        /* ======================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            background: black;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ======================== */
+        /* VIDEO BACKGROUND */
+        /* ======================== */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: fill;
+            z-index: 1;
+        }
+
+        /* ======================== */
+        /* MAIN LAYOUT COMPONENTS */
+        /* ======================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        
+        .glass-card.show ~ .back-button {
+            left: 110px;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ======================== */
+        /* PROJECT CONTENT STYLES */
+        /* ======================== */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 4em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        
+        .header p {
+            font-size: 1.5em;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .book-modal .project-card h3 {
+            font-size: 1.8em;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .book-modal .project-card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .book-modal .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .book-modal .tech-tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .book-modal .project-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .book-modal .project-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .book-modal .project-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Staggered animation delays */
+        .book-modal .project-card:nth-child(1) { animation-delay: 0.2s; }
+        .book-modal .project-card:nth-child(2) { animation-delay: 0.4s; }
+        .book-modal .project-card:nth-child(3) { animation-delay: 0.6s; }
+        .book-modal .project-card:nth-child(4) { animation-delay: 0.8s; }
+        .book-modal .project-card:nth-child(5) { animation-delay: 1.0s; }
+        .book-modal .project-card:nth-child(6) { animation-delay: 1.2s; }
+
+        /* ======================== */
+        /* NAVIGATION COMPONENTS */
+        /* ======================== */
+        
+        /* Glass Card Navbar */
+        .glass-card {
+            width: 60px;
+            height: calc(85vh - 40px);
+            background: rgba(255, 255, 255, 0.11);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 0 15px 3px rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 20px;
+            left: -50px;
+            overflow: hidden;
+            z-index: 2;
+            transition: left 0.3s ease-in-out;
+        }
+
+        .glass-card.show {
+            left: 20px;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.8),
+                transparent
+            );
+        }
+
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.8),
+                transparent,
+                rgba(255, 255, 255, 0.3)
+            );
+        }
+
+        /* Navigation Icons */
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .nav-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            box-shadow: 
+                0 6px 20px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-icon:active {
+            transform: scale(0.9);
+            transition: transform 0.1s ease;
+        }
+
+        .home-icon {
+            margin: 20px auto 15px;
+        }
+
+        .twitter-icon, .github-icon, .kaggle-icon, .medium-icon, .linkedin-icon, .contact-icon, .audio-icon {
+            margin: 15px auto;
+        }
+
+        /* Navbar Toggle */
+        .navbar-toggle {
+            position: fixed;
+            top: 40%;
+            left: 75px;
+            transform: translateY(-50%);
+            z-index: 1000;
+            transition: left 0.3s ease-in-out;
+            opacity: 0.9;
+        }
+
+        .navbar-toggle.navbar-open {
+            left: 95px;
+        }
+
+        .toggle-arrow {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-arrow:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            opacity: 1;
+        }
+
+        .toggle-arrow svg {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-toggle.navbar-open .toggle-arrow svg {
+            transform: rotate(180deg);
+        }
+
+        /* ======================== */
+        /* BIRD CURSOR SYSTEM */
+        /* ======================== */
+        .bird-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            will-change: left, top;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+            transition: filter 0.3s ease;
+            transform: scale(0.5) !important;
+            left: 0;
+            top: 0;
+        }
+
+        .bird-container {
+            position: relative;
+            width: 90px !important;
+            height: 80px !important;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+            margin: 0 auto;
+            transform-origin: center;
+            transition: transform 0.1s ease-out;
+        }
+
+        .bird {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Bird Body Parts */
+        .bird-body {
+            position: absolute;
+            width: 100px;
+            height: 75px;
+            background: var(--bird-body-gradient, linear-gradient(160deg, #8B4513 0%, #A0522D 30%, #CD853F 70%, #DEB887 100%));
+            border-radius: 50% 50% 40% 40%;
+            top: 35px;
+            left: 40px;
+            box-shadow: 
+                inset -8px -8px 15px rgba(101, 67, 33, 0.4),
+                inset 5px 0 10px rgba(205, 133, 63, 0.3),
+                3px 3px 12px rgba(0,0,0,0.25);
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .bird-breast {
+            position: absolute;
+            width: 65px;
+            height: 45px;
+            background: var(--bird-breast-gradient, linear-gradient(160deg, #FF8C00 0%, #FF4500 30%, #FF6347 100%));
+            border-radius: 50% 50% 40% 40%;
+            top: 45px;
+            left: 45px;
+            z-index: 3;
+            box-shadow: 
+                inset 0 -5px 8px rgba(139, 0, 0, 0.4),
+                1px 1px 5px rgba(0,0,0,0.15);
+        }
+
+        .bird-head {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: var(--bird-head-gradient, linear-gradient(160deg, #8B4513 0%, #A0522D 100%));
+            border-radius: 50%;
+            top: 15px;
+            left: 70px;
+            z-index: 3;
+            box-shadow: 
+                inset 0 -8px 12px rgba(69, 34, 0, 0.5),
+                3px 3px 8px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* Bird Details */
+        .feather-detail {
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: rgba(222, 184, 135, 0.7);
+            border-radius: 50%;
+            transform-origin: center;
+        }
+
+        .feather-detail-1 { top: 15px; left: 25px; transform: rotate(20deg); }
+        .feather-detail-2 { top: 20px; left: 40px; transform: rotate(-10deg); }
+        .feather-detail-3 { top: 25px; left: 55px; transform: rotate(15deg); }
+        .feather-detail-4 { top: 30px; left: 70px; transform: rotate(-5deg); }
+
+        .head-feather {
+            position: absolute;
+            width: 8px;
+            height: 15px;
+            background: rgba(205, 133, 63, 0.6);
+            border-radius: 50%;
+        }
+
+        .head-feather-1 { top: 10px; left: 15px; transform: rotate(30deg); }
+        .head-feather-2 { top: 5px; left: 30px; transform: rotate(-20deg); }
+        .head-feather-3 { top: 15px; left: 40px; transform: rotate(10deg); }
+
+        .bird-eye {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle at 30% 30%, #555 0%, #000 50%, #000 100%);
+            border-radius: 50%;
+            top: 25px;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 0 8px rgba(255,255,255,0.3),
+                0 0 5px rgba(0,0,0,0.5);
+            z-index: 4;
+        }
+
+        .bird-eye.left { left: 80px; }
+        .bird-eye.right { left: 105px; }
+
+        .eye-reflection {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background: #fff;
+            border-radius: 50%;
+            top: 4px;
+            left: 4px;
+            box-shadow: 0 0 5px rgba(255,255,255,0.9);
+            animation: shine 3s infinite;
+        }
+
+        .eye-highlight {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            top: 2px;
+            left: 10px;
+        }
+
+        .bird-beak {
+            position: absolute;
+            width: 25px;
+            height: 15px;
+            background: linear-gradient(to bottom, #D2691E, #8B4513);
+            border-radius: 50% 50% 5px 5px;
+            top: 35px;
+            left: 120px;
+            z-index: 4;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+        }
+
+        .beak-detail {
+            position: absolute;
+            width: 18px;
+            height: 3px;
+            background: #8B4513;
+            top: 7px;
+            left: 3px;
+            border-radius: 2px;
+        }
+
+        .beak-tip {
+            position: absolute;
+            width: 5px;
+            height: 3px;
+            background: #5D4037;
+            top: 12px;
+            left: 20px;
+            border-radius: 2px;
+        }
+
+        /* Bird Wings */
+        .bird-wing {
+            position: absolute;
+            width: 70px;
+            height: 50px;
+            background: linear-gradient(135deg, #5D4037 0%, #8B4513 30%, #A0522D 100%);
+            border-radius: 40% 50% 50% 40%;
+            z-index: 1;
+            transform-origin: top center;
+            box-shadow: 
+                5px 5px 15px rgba(0,0,0,0.4),
+                inset -5px -5px 8px rgba(0,0,0,0.3);
+        }
+
+        .bird-wing.left {
+            top: 40px;
+            left: 15px;
+        }
+
+        .bird-wing.right {
+            top: 40px;
+            left: 95px;
+        }
+
+        .wing-feather {
+            position: absolute;
+            background: linear-gradient(to bottom, #3E2723, #4E342E, #5D4037);
+            border-radius: 50%;
+        }
+
+        .wing-feather-1 {
+            width: 25px;
+            height: 45px;
+            top: 0;
+            left: 20px;
+            transform: rotate(-5deg);
+            z-index: 2;
+        }
+
+        .wing-feather-2 {
+            width: 22px;
+            height: 40px;
+            top: 5px;
+            left: 35px;
+            transform: rotate(3deg);
+            z-index: 3;
+        }
+
+        .wing-feather-3 {
+            width: 20px;
+            height: 35px;
+            top: 10px;
+            left: 45px;
+            transform: rotate(8deg);
+            z-index: 4;
+        }
+
+        /* Bird Tail */
+        .bird-tail {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            background: linear-gradient(to right, #5D4037, #8B4513, #A0522D);
+            border-radius: 50% 0 0 50%;
+            top: 55px;
+            left: 0;
+            transform-origin: left center;
+            z-index: 1;
+            box-shadow: -3px 3px 8px rgba(0,0,0,0.3);
+        }
+
+        .tail-feather {
+            position: absolute;
+            background: linear-gradient(to right, #4E342E, #5D4037, #795548);
+            border-radius: 50%;
+            transform-origin: left center;
+        }
+
+        .tail-feather-1 {
+            width: 18px;
+            height: 35px;
+            top: -8px;
+            left: 8px;
+            transform: rotate(8deg);
+        }
+
+        .tail-feather-2 {
+            width: 15px;
+            height: 30px;
+            top: 3px;
+            left: 20px;
+            transform: rotate(-5deg);
+        }
+
+        .tail-feather-3 {
+            width: 12px;
+            height: 25px;
+            top: 12px;
+            left: 30px;
+            transform: rotate(5deg);
+        }
+
+        /* Small Bird Variations */
+        .bird-cursor-small {
+            transform: scale(0.4) !important;
+            z-index: 9998;
+        }
+        
+        .bird-cursor-small .bird-container {
+            width: 72px !important;
+            height: 64px !important;
+        }
+        
+        .bird-cursor-small .bird-body {
+            background: linear-gradient(160deg, #4682B4 0%, #5F9EA0 30%, #87CEEB 70%, #B0E0E6 100%) !important;
+        }
+        
+        .bird-cursor-small .bird-breast {
+            background: linear-gradient(160deg, #87CEEB 0%, #4682B4 30%, #1E90FF 100%) !important;
+        }
+        
+        .bird-cursor-small .bird-head {
+            background: linear-gradient(160deg, #4682B4 0%, #1E90FF 100%) !important;
+        }
+
+        /* Flapping Animation */
+        .flapping .bird-wing.left {
+            animation: flap-left 0.4s infinite;
+        }
+
+        .flapping .bird-wing.right {
+            animation: flap-right 0.4s infinite;
+        }
+
+        /* ======================== */
+        /* DECORATIVE ELEMENTS */
+        /* ======================== */
+        
+        /* Birdhouse Decoration */
+        .birdhouse-decoration {
+            position: fixed;
+            bottom: -20px;
+            right: -15px;
+            width: 180px;
+            height: auto;
+            z-index: 500;
+            animation: shake 3s ease-in-out infinite;
+        }
+
+        .birdhouse-decoration img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Treasure Box Decoration */
+        .treasure-box {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: auto;
+            z-index: 500;
+            animation: glow 2s ease-in-out infinite alternate;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .treasure-box:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .treasure-box img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Animated Arrow */
+        .disabled-book-modal .project-arrow {
+            position: fixed;
+            top: 33%;
+            left: 38%;
+            z-index: 600;
+            cursor: pointer;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .arrow-shape {
+            font-size: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            animation: simpleFloat 2s ease-in-out infinite;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .disabled-book-modal .project-arrow-text {
+            position: absolute;
+            font-size: 32px;
+            font-family: 'brushield Italic', sans-serif;
+            font-weight: 600;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.3);
+            opacity: 0.6;
+            transition: all 0.4s ease;
+            pointer-events: auto;
+            z-index: 601;
+            cursor: pointer;
+            user-select: none;
+            left: -160px;
+            top: 25px;
+            animation: simpleFloat 2s ease-in-out infinite;
+        }
+
+        /* ======================== */
+        /* ANIMATIONS & KEYFRAMES */
+        /* ======================== */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes flap-left {
+            0% { transform: rotate(-30deg); }
+            50% { transform: rotate(15deg); }
+            100% { transform: rotate(-30deg); }
+        }
+
+        @keyframes flap-right {
+            0% { transform: rotate(30deg); }
+            50% { transform: rotate(-15deg); }
+            100% { transform: rotate(30deg); }
+        }
+
+        @keyframes shine {
+            0% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.9; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+            20% { transform: translate(1px, -1px) rotate(0.5deg); }
+            30% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+            40% { transform: translate(1px, 1px) rotate(0.5deg); }
+            50% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+            60% { transform: translate(1px, -1px) rotate(0.5deg); }
+            70% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+            80% { transform: translate(1px, 1px) rotate(0.5deg); }
+            90% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @keyframes glow {
+            0% { 
+                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5)) 
+                        drop-shadow(0 0 30px rgba(255, 215, 0, 0.3))
+                        drop-shadow(0 0 45px rgba(255, 215, 0, 0.2)); 
+            }
+            100% { 
+                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)) 
+                        drop-shadow(0 0 50px rgba(255, 215, 0, 0.6))
+                        drop-shadow(0 0 75px rgba(255, 215, 0, 0.4)); 
+            }
+        }
+
+        @keyframes simpleFloat {
+            0%, 100% {
+                transform: translateY(0px);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-8px);
+                opacity: 1;
+            }
+        }
+
+        @keyframes arrowAttract {
+            0%, 100% {
+                opacity: 0.8;
+                transform: translateY(-50%) scale(1);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+            25% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1.15);
+                text-shadow: 0 0 35px rgba(255, 255, 255, 0.8);
+            }
+            50% {
+                opacity: 0.9;
+                transform: translateY(-50%) scale(1.05);
+                text-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+            }
+            75% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1.2);
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+            }
+        }
+
+        /* ======================== */
+        /* BOOK MODAL STYLES */
+        /* ======================== */
+        .book-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden !important;
+            background-color: transparent;
+        }
+
+        .book-modal-content {
+            position: relative;
+            margin: 2% auto;
+            width: 95%;
+            height: 95vh;
+            background: transparent;
+            border-radius: 10px;
+            overflow: hidden !important;
+        }
+
+        .book-close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #333;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10001;
+            transition: color 0.3s ease;
+            background: rgba(226, 225, 225, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .book-close:hover {
+            color: #FFD700;
+        }
+
+        .book-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            overflow: hidden !important;
+            
+        }
+        
+        .book-iframe::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+
+
+        .book-modal .cover-page {
+            position: relative;
+            transition: box-shadow 0.5s ease-in-out;
+        }
+
+        .book-modal .cover-page.glowing {
+            animation: bookGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes bookGlow {
+            0% {
+                box-shadow: 
+                    0 0 30px rgba(255, 215, 0, 0.7),
+                    0 0 60px rgba(255, 215, 0, 0.5),
+                    0 0 90px rgba(255, 215, 0, 0.3),
+                    0 0 120px rgba(255, 215, 0, 0.2);
+                filter: brightness(1) contrast(1);
+            }
+            25% {
+                box-shadow: 
+                    0 0 50px rgba(255, 215, 0, 0.9),
+                    0 0 100px rgba(255, 215, 0, 0.7),
+                    0 0 150px rgba(255, 215, 0, 0.5),
+                    0 0 200px rgba(255, 215, 0, 0.3);
+                filter: brightness(1.1) contrast(1.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 40px rgba(255, 240, 100, 0.95),
+                    0 0 80px rgba(255, 215, 0, 0.8),
+                    0 0 120px rgba(255, 215, 0, 0.6),
+                    0 0 160px rgba(255, 215, 0, 0.4);
+                filter: brightness(1.05) contrast(1.05);
+            }
+            75% {
+                box-shadow: 
+                    0 0 60px rgba(255, 215, 0, 1),
+                    0 0 120px rgba(255, 215, 0, 0.8),
+                    0 0 180px rgba(255, 215, 0, 0.6),
+                    0 0 240px rgba(255, 215, 0, 0.4);
+                filter: brightness(1.15) contrast(1.15);
+            }
+            100% {
+                box-shadow: 
+                    0 0 45px rgba(255, 235, 120, 0.85),
+                    0 0 90px rgba(255, 215, 0, 0.65),
+                    0 0 135px rgba(255, 215, 0, 0.45),
+                    0 0 180px rgba(255, 215, 0, 0.25);
+                filter: brightness(1.08) contrast(1.08);
+            }
+        }
+
+        .book-modal .cover-page::before,
+        .book-modal .cover-page::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.8) 30%, rgba(255, 215, 0, 0.5) 50%, transparent 80%);
+            border-radius: 50%;
+            filter: blur(8px);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 10;
+        }
+
+        .book-modal .cover-page.glowing::before {
+            opacity: 1;
+            animation: cornerGlowTopLeft 2.5s ease-in-out infinite;
+        }
+
+        .book-modal .cover-page.glowing::after {
+            opacity: 1;
+            animation: cornerGlowTopRight 2.8s ease-in-out infinite;
+        }
+
+        .book-modal .cover-page::before {
+            top: -30px;
+            left: -30px;
+        }
+
+        .book-modal .cover-page::after {
+            top: -30px;
+            right: -30px;
+        }
+
+        .book-modal .cover-page .corner-glow-bottom {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 1) 0%, rgba(255, 215, 0, 0.8) 30%, rgba(255, 215, 0, 0.5) 50%, transparent 80%);
+            border-radius: 50%;
+            filter: blur(8px);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 10;
+        }
+
+        .cover-page.glowing .corner-glow-bottom-left {
+            opacity: 1;
+            animation: cornerGlowBottomLeft 3.2s ease-in-out infinite;
+        }
+
+        .cover-page.glowing .corner-glow-bottom-right {
+            opacity: 1;
+            animation: cornerGlowBottomRight 2.7s ease-in-out infinite;
+        }
+
+        .book-modal .corner-glow-bottom-left {
+            bottom: -30px;
+            left: -30px;
+        }
+
+        .book-modal .corner-glow-bottom-right {
+            bottom: -30px;
+            right: -30px;
+        }
+
+        @keyframes cornerGlowTopLeft {
+            0% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            15% { 
+                opacity: 0.9;
+                transform: scale(1.1);
+                filter: blur(10px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            30% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(8px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.3);
+                filter: blur(12px);
+                box-shadow: 0 0 40px rgba(255, 240, 100, 0.9);
+            }
+            70% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(9px);
+                box-shadow: 0 0 35px rgba(255, 215, 0, 0.8);
+            }
+            100% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        @keyframes cornerGlowTopRight {
+            0% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            20% { 
+                opacity: 0.5;
+                transform: scale(0.7);
+                filter: blur(5px);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            }
+            45% { 
+                opacity: 0.95;
+                transform: scale(1.2);
+                filter: blur(11px);
+                box-shadow: 0 0 35px rgba(255, 235, 120, 0.85);
+            }
+            65% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(9px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            85% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            100% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+        }
+
+        @keyframes cornerGlowBottomLeft {
+            0% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(8px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            25% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            40% { 
+                opacity: 1;
+                transform: scale(1.4);
+                filter: blur(14px);
+                box-shadow: 0 0 45px rgba(255, 240, 100, 1);
+            }
+            60% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            80% { 
+                opacity: 0.9;
+                transform: scale(1.1);
+                filter: blur(10px);
+                box-shadow: 0 0 35px rgba(255, 215, 0, 0.9);
+            }
+            100% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(8px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        @keyframes cornerGlowBottomRight {
+            0% { 
+                opacity: 0.5;
+                transform: scale(0.7);
+                filter: blur(5px);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            }
+            30% { 
+                opacity: 0.9;
+                transform: scale(1.2);
+                filter: blur(11px);
+                box-shadow: 0 0 35px rgba(255, 235, 120, 0.9);
+            }
+            50% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            75% { 
+                opacity: 1;
+                transform: scale(1.3);
+                filter: blur(13px);
+                box-shadow: 0 0 40px rgba(255, 240, 100, 1);
+            }
+            90% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(8px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            100% { 
+                opacity: 0.5;
+                transform: scale(0.7);
+                filter: blur(5px);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        /* Scope all book styles to the modal */
+        .book-modal .book-page {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+            background: url('book/js/vintage-grunge.png') center center / cover no-repeat;
+        }
+
+        .book-modal .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(240, 248, 255, 0.7) 0%, rgba(230, 243, 255, 0.7) 50%, rgba(255, 255, 255, 0.7) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .book-modal .book-page::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            right: 15px;
+            bottom: 10px;
+            border: 1px solid rgba(139, 69, 19, 0.4);
+            border-radius: 3px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .book-modal .page-content {
+            z-index: 3;
+            color: #2C1810;
+            position: relative;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .book-modal .page-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            font-weight: 400;
+            font-family: 'Georgia', serif;
+            color: #2C1810;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+            letter-spacing: 2px;
+        }
+
+        .book-modal .page-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            font-family: 'Georgia', serif;
+            color: #3E2723;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+        }
+
+        .book-modal .page-content p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #2C1810;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .page3, .page4, .page5, .page6 { 
+            background: url('book/js/vintage-grunge.png') center center / cover no-repeat;
+        }
+
+        .book-modal .cover-page {
+            padding: 0 !important;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 25%, #ffffff 50%, #f0f8ff 75%, #e6f3ff 100%) !important;
+            clip-path: none !important;
+            box-shadow: 
+                inset -5px 0 10px rgba(0, 0, 0, 0.2),
+                inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-modal .cover-page::before,
+        .book-modal .cover-page::after {
+            display: none !important;
+        }
+
+        .book-modal .cover-page img {
+            border-radius: 8px;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.3),
+                inset -2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-modal .empty-page {
+            padding: 0 !important;
+            background: url('book/js/vintage-grunge.png') center center / cover no-repeat !important;
+        }
+
+        .book-modal .empty-page::before {
+            display: none !important;
+        }
+
+        .book-modal .empty-page::after {
+            display: none !important;
+        }
+
+        .book-modal .project-page {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px !important;
+        }
+
+        .book-modal .project-container {
+            max-width: 100%;
+            text-align: center;
+        }
+
+        .book-modal .project-image {
+            width: 100%;
+            max-width: 320px;
+            height: 220px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 3px solid rgba(139, 69, 19, 0.5);
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .book-modal .project-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2C1810;
+            text-align: left;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .book-modal .project-text p {
+            margin: 0;
+            font-style: normal;
+        }
+
+        .book-modal .project-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 0 5px;
+        }
+
+        .book-modal .project-title {
+            font-family: 'Kalam', cursive;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            margin: 0;
+            letter-spacing: 0.2px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .book-modal .project-title:hover {
+            color: #8B4513;
+            transform: scale(1.05);
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+        }
+
+        .book-modal .project-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .book-modal .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+        }
+
+        .book-modal .status-indicator.working {
+            background: radial-gradient(circle, #4CAF50 40%, #66BB6A 100%);
+            box-shadow: 
+                0 0 8px rgba(76, 175, 80, 0.8),
+                0 0 16px rgba(76, 175, 80, 0.4);
+            animation: livePulse 1.5s infinite;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .book-modal .status-indicator.not-working {
+            background: radial-gradient(circle, #F44336 40%, #EF5350 100%);
+            box-shadow: 0 0 6px rgba(244, 67, 54, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes livePulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 
+                    0 0 8px rgba(76, 175, 80, 0.8),
+                    0 0 16px rgba(76, 175, 80, 0.4);
+                background: radial-gradient(circle, #4CAF50 40%, #66BB6A 100%);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 
+                    0 0 12px rgba(76, 175, 80, 1),
+                    0 0 24px rgba(76, 175, 80, 0.6),
+                    0 0 36px rgba(76, 175, 80, 0.3);
+                background: radial-gradient(circle, #66BB6A 30%, #4CAF50 100%);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 
+                    0 0 8px rgba(76, 175, 80, 0.8),
+                    0 0 16px rgba(76, 175, 80, 0.4);
+                background: radial-gradient(circle, #4CAF50 40%, #66BB6A 100%);
+            }
+        }
+
+        .book-modal .status-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .book-modal .tech-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        .book-modal .tech-icon {
+            font-size: 1.3rem;
+            filter: drop-shadow(0.5px 0.5px 1px rgba(0, 0, 0, 0.2));
+            padding: 6px 8px;
+            border-radius: 4px;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .book-modal .tech-icon[title="HTML5"] {
+            color: #E34F26;
+        }
+
+        .book-modal .tech-icon[title="CSS3"] {
+            color: #1572B6;
+        }
+
+        .book-modal .tech-icon[title="JavaScript"] {
+            color: #F7DF1E;
+        }
+
+        .book-modal .tech-icon[title="React"] {
+            color: #61DAFB;
+        }
+
+        .book-modal .project-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.6rem;
+            line-height: 1.4;
+            color: #2C1810;
+            text-align: left;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            max-width: 280px;
+            margin: 0 auto;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .book-modal .project-link-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem;
+            color: #000 !important;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            margin: 10px 0 8px 0;
+            word-break: break-all;
+            line-height: 1.3;
+            text-decoration: none;
+            display: block !important;
+            visibility: visible !important;
+            background: #90EE90 !important;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 2px solid #006400 !important;
+            transition: all 0.3s ease;
+            text-align: center;
+            z-index: 999 !important;
+        }
+
+        .book-modal .project-link-text:hover {
+            background: rgba(255, 215, 0, 0.5);
+            color: #2C1810;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+        }
+
+        .book-modal .project-link {
+            display: block !important;
+            visibility: visible !important;
+            margin-top: 8px;
+            padding: 10px 15px;
+            background: #FFD700 !important;
+            border: 3px solid #8B4513 !important;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #000 !important;
+            font-family: 'Kalam', cursive;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 999 !important;
+        }
+
+        .book-modal .project-link::before {
+            content: '🔗 ';
+            margin-right: 4px;
+        }
+
+        .book-modal .project-link:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 235, 120, 0.5) 50%, rgba(255, 215, 0, 0.4) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+        }
+
+        .book-modal .project-link::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .book-modal .project-link:hover::after {
+            left: 100%;
+        }
+
+        .book-modal .project-details {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px !important;
+        }
+
+        .book-modal .details-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .book-modal .details-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            max-width: 280px;
+            margin: 0 auto;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .book-modal .details-text p {
+            margin: 0;
+            text-align: left;
+        }
+        /* ======================== */
+        /* PROJECT ARROW & TEXT */
+        /* ======================== */
+        .project-arrow {
+            position: fixed;
+            top: 40%;
+            left: 28%;
+            z-index: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .arrow-shape {
+            font-size: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            animation: simpleFloat 2s ease-in-out infinite;
+        }
+
+        .project-arrow-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'brushield Italic', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: textFloat 2s ease-in-out infinite;
+            white-space: nowrap;
+            order: -1;
+        }
+
+        @keyframes simpleFloat {
+            0%, 100% {
+                transform: translateY(-50%);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-55%);
+                opacity: 1;
+            }
+        }
+
+        @keyframes textFloat {
+            0%, 100% {
+                transform: translateY(-30px);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-35px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video id="videoPlayer" autoplay muted loop>
+        <source src="plant-motion.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="glass-card">
+        <div class="nav-icon home-icon" title="Home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9M19 10L21 12M19 10V20C19 20.5523 18.5523 21 18 21H15M9 21C9.55228 21 10 20.5523 10 20V16C10 15.4477 10.4477 15 11 15H13C13.5523 15 14 15.4477 14 16V20C14 20.5523 14.4477 21 15 21M9 21H15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon twitter-icon" title="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon github-icon" title="GitHub">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon kaggle-icon" title="Kaggle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.336"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon medium-icon" title="Medium">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon linkedin-icon" title="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon contact-icon" title="Contact">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="22,6 12,13 2,6" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon audio-icon" title="Toggle Audio">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                <line x1="23" y1="9" x2="17" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+                <line x1="17" y1="9" x2="23" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Navbar Toggle Arrow -->
+    <div class="navbar-toggle" id="navbarToggle">
+        <div class="toggle-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-button">← Back to Home</a>
+    
+    <!-- Bird Cursor Element -->
+    <div id="birdCursor" class="bird-cursor">
+        <div class="bird-container">
+            <div class="bird">
+                <div class="bird-body">
+                    <div class="feather-detail feather-detail-1"></div>
+                    <div class="feather-detail feather-detail-2"></div>
+                    <div class="feather-detail feather-detail-3"></div>
+                    <div class="feather-detail feather-detail-4"></div>
+                </div>
+                <div class="bird-breast"></div>
+                <div class="bird-head">
+                    <div class="head-feather head-feather-1"></div>
+                    <div class="head-feather head-feather-2"></div>
+                    <div class="head-feather head-feather-3"></div>
+                </div>
+                <div class="bird-eye left">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="bird-eye right">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="bird-beak">
+                    <div class="beak-detail"></div>
+                    <div class="beak-tip"></div>
+                </div>
+                <div class="bird-wing left">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                <div class="bird-wing right">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                <div class="bird-tail">
+                    <div class="tail-feather tail-feather-1"></div>
+                    <div class="tail-feather tail-feather-2"></div>
+                    <div class="tail-feather tail-feather-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Bird Cursor Element -->
+    <div id="birdCursor2" class="bird-cursor bird-cursor-small">
+        <div class="bird-container">
+            <div class="bird">
+                <div class="bird-body">
+                    <div class="feather-detail feather-detail-1"></div>
+                    <div class="feather-detail feather-detail-2"></div>
+                    <div class="feather-detail feather-detail-3"></div>
+                    <div class="feather-detail feather-detail-4"></div>
+                </div>
+                <div class="bird-breast"></div>
+                <div class="bird-head">
+                    <div class="head-feather head-feather-1"></div>
+                    <div class="head-feather head-feather-2"></div>
+                    <div class="head-feather head-feather-3"></div>
+                </div>
+                <div class="bird-eye left">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="bird-eye right">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="bird-beak">
+                    <div class="beak-detail"></div>
+                    <div class="beak-tip"></div>
+                </div>
+                <div class="bird-wing left">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                <div class="bird-wing right">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                <div class="bird-tail">
+                    <div class="tail-feather tail-feather-1"></div>
+                    <div class="tail-feather tail-feather-2"></div>
+                    <div class="tail-feather tail-feather-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Empty projects page -->
+    </div>
+
+    <!-- Birdhouse Decoration -->
+    <div class="birdhouse-decoration">
+        <img src="bird_house.png" alt="Decorative Birdhouse">
+    </div>
+
+    <!-- Treasure Box Decoration -->
+    <div class="treasure-box">
+        <img src="box.png" alt="Treasure Box">
+    </div>
+
+    <!-- Animated Arrow -->
+    <div class="project-arrow">
+        <div class="arrow-shape">➤</div>
+        <span class="project-arrow-text">Go for Projects</span>
+    </div>
+
+    <script>
+        // Global variables
+        const navbar = document.querySelector('.glass-card');
+        const navbarToggle = document.getElementById('navbarToggle');
+        
+        // Video player functionality
+        const video = document.getElementById('videoPlayer');
+        
+        // Force play when page loads
+        window.addEventListener('load', () => {
+            video.muted = true; // Ensure video stays muted
+            video.play().catch(e => {
+                console.log('Autoplay prevented:', e);
+            });
+        });
+        
+        // Ensure video keeps playing
+        video.addEventListener('ended', () => {
+            video.currentTime = 0;
+            video.play();
+        });
+        
+        // Fallback for browsers that pause video
+        video.addEventListener('pause', () => {
+            video.play();
+        });
+        
+        // Reset video if it gets close to the end
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime >= video.duration - 0.1) {
+                video.currentTime = 0;
+            }
+        });
+
+        // Navbar Toggle Functionality - using shared variables
+        const backButton = document.querySelector('.back-button');
+        let mainNavbarOpen = false;
+
+        navbarToggle.addEventListener('click', () => {
+            mainNavbarOpen = !mainNavbarOpen;
+            
+            if (mainNavbarOpen) {
+                navbar.classList.add('show');
+                navbarToggle.classList.add('navbar-open');
+                backButton.style.left = '110px';
+            } else {
+                navbar.classList.remove('show');
+                navbarToggle.classList.remove('navbar-open');
+                backButton.style.left = '30px';
+            }
+        });
+
+        // Audio functionality
+        let backgroundAudio = null;
+        let isAudioMuted = localStorage.getItem('audioMuted') !== 'false';
+        
+        // Initialize background audio
+        function initAudio() {
+            backgroundAudio = new Audio('jungle.mp3');
+            backgroundAudio.loop = true;
+            backgroundAudio.volume = 0.3; // Set to 30% volume
+            
+            // Preload the audio
+            backgroundAudio.preload = 'auto';
+            
+            backgroundAudio.addEventListener('canplaythrough', () => {
+                console.log('Background audio loaded and ready');
+            });
+            
+            backgroundAudio.addEventListener('error', (e) => {
+                console.error('Error loading background audio:', e);
+            });
+        }
+        
+        function toggleAudio() {
+            const audioIcon = document.querySelector('.audio-icon svg');
+            
+            if (!backgroundAudio) {
+                initAudio();
+            }
+            
+            isAudioMuted = !isAudioMuted;
+            localStorage.setItem('audioMuted', isAudioMuted);
+            
+            if (isAudioMuted) {
+                // Pause audio
+                if (backgroundAudio) {
+                    backgroundAudio.pause();
+                }
+                // Muted icon (speaker with X)
+                audioIcon.innerHTML = `
+                    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                    <line x1="23" y1="9" x2="17" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="17" y1="9" x2="23" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+                `;
+            } else {
+                // Play audio
+                if (backgroundAudio) {
+                    backgroundAudio.play().catch(e => {
+                        console.log('Autoplay prevented, user interaction required:', e);
+                    });
+                }
+                // Unmuted icon (speaker with sound waves)
+                audioIcon.innerHTML = `
+                    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                    <path d="M19.07 4.93C20.97 6.83 21.97 9.35 21.97 12C21.97 14.65 20.97 17.17 19.07 19.07M15.54 8.46C16.49 9.41 16.97 10.7 16.97 12C16.97 13.3 16.49 14.59 15.54 15.54" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                `;
+            }
+            
+            console.log(`Background audio ${isAudioMuted ? 'muted' : 'playing'}`);
+        }
+
+        // Navigation functionality for navbar icons
+        document.querySelectorAll('.nav-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                this.classList.add('bubble-click');
+                setTimeout(() => {
+                    this.classList.remove('bubble-click');
+                }, 600);
+                
+                // Handle navigation based on icon class
+                if (this.classList.contains('home-icon')) {
+                    window.location.href = 'index.html?skipIntro=true';
+                } else if (this.classList.contains('twitter-icon')) {
+                    window.open('https://x.com/mrathaur704', '_blank');
+                } else if (this.classList.contains('github-icon')) {
+                    window.open('https://github.com/ItsVicky25', '_blank');
+                } else if (this.classList.contains('kaggle-icon')) {
+                    window.open('https://www.kaggle.com/manishrathaur', '_blank');
+                } else if (this.classList.contains('medium-icon')) {
+                    window.open('https://medium.com/@manishrathaur10', '_blank');
+                } else if (this.classList.contains('linkedin-icon')) {
+                    window.open('https://www.linkedin.com/in/manish-rathaur-80b40b24a/', '_blank');
+                } else if (this.classList.contains('contact-icon')) {
+                    window.location.href = 'mailto:mrathau704@gmail.com';
+                } else if (this.classList.contains('audio-icon')) {
+                    toggleAudio();
+                }
+            });
+        });
+        
+        // Initialize audio when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initAudio();
+            
+            // Set initial audio icon based on saved state
+            if (!isAudioMuted) {
+                const audioIcon = document.querySelector('.audio-icon svg');
+                if (audioIcon) {
+                    audioIcon.innerHTML = `
+                        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                        <path d="M19.07 4.93C20.97 6.83 21.97 9.35 21.97 12C21.97 14.65 20.97 17.17 19.07 19.07M15.54 8.46C16.49 9.41 16.97 10.7 16.97 12C16.97 13.3 16.49 14.59 15.54 15.54" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    `;
+                    if (backgroundAudio) {
+                        backgroundAudio.play().catch(e => console.log('Autoplay prevented:', e));
+                    }
+                }
+            }
+        });
+        
+        // Navbar slide-in/out functionality - use different variable names
+        let hideTimeout;
+        let navbarIsOpen = false;
+        
+        // Navbar starts hidden, user controls with toggle button
+        navbarIsOpen = false;
+
+        // Navbar Toggle Functionality
+        navbarToggle.addEventListener('click', () => {
+            navbarIsOpen = !navbarIsOpen;
+            
+            if (navbarIsOpen) {
+                navbar.classList.add('show');
+                navbarToggle.classList.add('navbar-open');
+                clearTimeout(hideTimeout);
+            } else {
+                navbar.classList.remove('show');
+                navbarToggle.classList.remove('navbar-open');
+            }
+        });
+        
+
+        // Treasure box click handler
+        document.querySelector('.treasure-box').addEventListener('click', () => {
+            showBookModal();
+        });
+
+        // Dual Bird Cursor System with Wing Flapping
+        let birdElement1 = null;
+        let birdElement2 = null;
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        // First bird (follows mouse)
+        let bird1X = 0;
+        let bird1Y = 0;
+        let prevBird1X = 0;
+        let prevBird1Y = 0;
+        let isFlapping1 = false;
+        
+        // Second bird (follows first bird)
+        let bird2X = 0;
+        let bird2Y = 0;
+        let prevBird2X = 0;
+        let prevBird2Y = 0;
+        let isFlapping2 = false;
+        
+        function initBirdCursor() {
+            console.log('Initializing dual bird cursor...');
+            
+            birdElement1 = document.getElementById('birdCursor');
+            birdElement2 = document.getElementById('birdCursor2');
+            
+            if (!birdElement1 || !birdElement2) {
+                console.error('Bird cursor elements not found');
+                return;
+            }
+            
+            // Set initial positions
+            bird1X = window.innerWidth / 2;
+            bird1Y = window.innerHeight / 2;
+            bird2X = bird1X - 80; // Start behind first bird
+            bird2Y = bird1Y + 20;
+            
+            prevBird1X = bird1X;
+            prevBird1Y = bird1Y;
+            prevBird2X = bird2X;
+            prevBird2Y = bird2Y;
+            
+            // Track mouse movement
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            // Start animation loop
+            animateBirds();
+            console.log('Dual bird cursor initialized successfully');
+        }
+        
+        function animateBirds() {
+            if (!birdElement1 || !birdElement2) return;
+            
+            // Store previous positions
+            prevBird1X = bird1X;
+            prevBird1Y = bird1Y;
+            prevBird2X = bird2X;
+            prevBird2Y = bird2Y;
+            
+            // === FIRST BIRD (follows mouse) ===
+            const speed1 = 0.15;
+            bird1X += (mouseX - bird1X) * speed1;
+            bird1Y += (mouseY - bird1Y) * speed1;
+            
+            // Calculate movement speed for flapping
+            const deltaX1 = bird1X - prevBird1X;
+            const deltaY1 = bird1Y - prevBird1Y;
+            const movementSpeed1 = Math.sqrt(deltaX1 * deltaX1 + deltaY1 * deltaY1);
+            const shouldFlap1 = movementSpeed1 > 0.5;
+            
+            // Calculate direction for flipping
+            const mouseDirection1 = mouseX - bird1X;
+            const scaleX1 = mouseDirection1 >= 0 ? 1 : -1;
+            
+            // Apply position and flip for first bird
+            birdElement1.style.left = (bird1X - 45) + 'px';
+            birdElement1.style.top = (bird1Y - 40) + 'px';
+            
+            const container1 = birdElement1.querySelector('.bird-container');
+            if (container1) {
+                if (shouldFlap1 && !isFlapping1) {
+                    container1.classList.add('flapping');
+                    isFlapping1 = true;
+                } else if (!shouldFlap1 && isFlapping1) {
+                    container1.classList.remove('flapping');
+                    isFlapping1 = false;
+                }
+                container1.style.transform = `scaleX(${scaleX1})`;
+            }
+            
+            // === SECOND BIRD (follows first bird) ===
+            const speed2 = 0.08; // Slower to create trailing effect
+            const followDistance = 100; // Distance to maintain behind first bird
+            
+            // Calculate target position behind first bird
+            const targetX2 = bird1X - (scaleX1 * followDistance);
+            const targetY2 = bird1Y + 30; // Slightly below
+            
+            bird2X += (targetX2 - bird2X) * speed2;
+            bird2Y += (targetY2 - bird2Y) * speed2;
+            
+            // Calculate movement speed for flapping
+            const deltaX2 = bird2X - prevBird2X;
+            const deltaY2 = bird2Y - prevBird2Y;
+            const movementSpeed2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
+            const shouldFlap2 = movementSpeed2 > 0.3; // More sensitive for smaller bird
+            
+            // Calculate direction for flipping (follow first bird's direction)
+            const scaleX2 = scaleX1; // Same direction as first bird
+            
+            // Apply position and flip for second bird
+            birdElement2.style.left = (bird2X - 36) + 'px'; // Adjusted for bigger size (40%)
+            birdElement2.style.top = (bird2Y - 32) + 'px';
+            
+            const container2 = birdElement2.querySelector('.bird-container');
+            if (container2) {
+                if (shouldFlap2 && !isFlapping2) {
+                    container2.classList.add('flapping');
+                    isFlapping2 = true;
+                } else if (!shouldFlap2 && isFlapping2) {
+                    container2.classList.remove('flapping');
+                    isFlapping2 = false;
+                }
+                container2.style.transform = `scaleX(${scaleX2})`;
+            }
+            
+            // Continue animation
+            requestAnimationFrame(animateBirds);
+        }
+
+        // Initialize bird cursor when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initBirdCursor);
+        // Book Modal Functions
+        function showBookModal() {
+            document.getElementById('bookModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideBookModal() {
+            document.getElementById('bookModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+
+    <!-- Book Modal -->
+    <div id="bookModal" class="book-modal">
+        <div class="book-modal-content">
+            <span class="book-close" onclick="hideBookModal()">&times;</span>
+            <iframe src="book/index.html" class="book-iframe" scrolling="no"></iframe>
+        </div>
+    </div>
+</body>
+</html>

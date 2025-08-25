@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Book</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Dancing+Script:wght@400;600;700&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow: hidden !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar,
+        *::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: transparent !important;
+        }
+
+        * {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+            overflow-x: hidden !important;
+            overflow-y: hidden !important;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: transparent;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #flipbook {
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .cover-page {
+            position: relative;
+            transition: box-shadow 0.5s ease-in-out;
+        }
+
+        .cover-page.glowing {
+            /* animation: bookGlow 3s ease-in-out infinite alternate; */
+        }
+
+        @keyframes bookGlow {
+            0% {
+                box-shadow: 
+                    0 0 30px rgba(255, 215, 0, 0.7),
+                    0 0 60px rgba(255, 215, 0, 0.5),
+                    0 0 90px rgba(255, 215, 0, 0.3),
+                    0 0 120px rgba(255, 215, 0, 0.2);
+                filter: brightness(1) contrast(1);
+            }
+            25% {
+                box-shadow: 
+                    0 0 50px rgba(255, 215, 0, 0.9),
+                    0 0 100px rgba(255, 215, 0, 0.7),
+                    0 0 150px rgba(255, 215, 0, 0.5),
+                    0 0 200px rgba(255, 215, 0, 0.3);
+                filter: brightness(1.1) contrast(1.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 40px rgba(255, 240, 100, 0.95),
+                    0 0 80px rgba(255, 215, 0, 0.8),
+                    0 0 120px rgba(255, 215, 0, 0.6),
+                    0 0 160px rgba(255, 215, 0, 0.4);
+                filter: brightness(1.05) contrast(1.05);
+            }
+            75% {
+                box-shadow: 
+                    0 0 60px rgba(255, 215, 0, 1),
+                    0 0 120px rgba(255, 215, 0, 0.8),
+                    0 0 180px rgba(255, 215, 0, 0.6),
+                    0 0 240px rgba(255, 215, 0, 0.4);
+                filter: brightness(1.15) contrast(1.15);
+            }
+            100% {
+                box-shadow: 
+                    0 0 45px rgba(255, 235, 120, 0.85),
+                    0 0 90px rgba(255, 215, 0, 0.65),
+                    0 0 135px rgba(255, 215, 0, 0.45),
+                    0 0 180px rgba(255, 215, 0, 0.25);
+                filter: brightness(1.08) contrast(1.08);
+            }
+        }
+
+        .cover-page::before,
+        .cover-page::after {
+            display: none;
+        }
+
+        .cover-page.glowing::before {
+            /* opacity: 1;
+            animation: cornerGlowTopLeft 2.5s ease-in-out infinite; */
+        }
+
+        .cover-page.glowing::after {
+            /* opacity: 1;
+            animation: cornerGlowTopRight 2.8s ease-in-out infinite; */
+        }
+
+        .cover-page::before {
+            top: 5px;
+            left: 5px;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        .cover-page::after {
+            top: 5px;
+            right: 5px;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
+
+        .cover-page .corner-glow-bottom {
+            display: none;
+        }
+
+        .cover-page.glowing .corner-glow-bottom-left {
+            /* opacity: 1;
+            animation: cornerGlowBottomLeft 3.2s ease-in-out infinite; */
+        }
+
+        .cover-page.glowing .corner-glow-bottom-right {
+            /* opacity: 1;
+            animation: cornerGlowBottomRight 2.7s ease-in-out infinite; */
+        }
+
+        .corner-glow-bottom-left {
+            bottom: 5px;
+            left: 5px;
+            clip-path: polygon(0 0, 0 100%, 100% 100%);
+        }
+
+        .corner-glow-bottom-right {
+            bottom: 5px;
+            right: 5px;
+            clip-path: polygon(0 100%, 100% 0, 100% 100%);
+        }
+
+        @keyframes cornerGlowTopLeft {
+            0% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            15% { 
+                opacity: 0.9;
+                transform: scale(1.1);
+                filter: blur(10px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            30% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(8px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.3);
+                filter: blur(12px);
+                box-shadow: 0 0 40px rgba(255, 240, 100, 0.9);
+            }
+            70% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(9px);
+                box-shadow: 0 0 35px rgba(255, 215, 0, 0.8);
+            }
+            100% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        @keyframes cornerGlowTopRight {
+            0% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            20% { 
+                opacity: 0.5;
+                transform: scale(0.7);
+                filter: blur(5px);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            }
+            45% { 
+                opacity: 0.95;
+                transform: scale(1.2);
+                filter: blur(11px);
+                box-shadow: 0 0 35px rgba(255, 235, 120, 0.85);
+            }
+            65% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(9px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            85% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            100% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+        }
+
+        @keyframes cornerGlowBottomLeft {
+            0% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(8px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            25% { 
+                opacity: 0.6;
+                transform: scale(0.8);
+                filter: blur(6px);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            40% { 
+                opacity: 1;
+                transform: scale(1.4);
+                filter: blur(14px);
+                box-shadow: 0 0 45px rgba(255, 240, 100, 1);
+            }
+            60% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            80% { 
+                opacity: 0.9;
+                transform: scale(1.1);
+                filter: blur(10px);
+                box-shadow: 0 0 35px rgba(255, 215, 0, 0.9);
+            }
+            100% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(8px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        @keyframes cornerGlowBottomRight {
+            0% { 
+                opacity: 0.5;
+                transform: scale(0.7);
+                filter: blur(5px);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            }
+            30% { 
+                opacity: 0.9;
+                transform: scale(1.2);
+                filter: blur(11px);
+                box-shadow: 0 0 35px rgba(255, 235, 120, 0.9);
+            }
+            50% { 
+                opacity: 0.7;
+                transform: scale(0.9);
+                filter: blur(7px);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            }
+            75% { 
+                opacity: 1;
+                transform: scale(1.3);
+                filter: blur(13px);
+                box-shadow: 0 0 40px rgba(255, 240, 100, 1);
+            }
+            90% { 
+                opacity: 0.8;
+                transform: scale(1.0);
+                filter: blur(8px);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            100% { 
+                opacity: 0.5;
+                transform: scale(0.7);
+                filter: blur(5px);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        .book-page {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+            background: url('js/vintage-grunge.png') center center / cover no-repeat;
+        }
+
+        .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(240, 248, 255, 0.7) 0%, rgba(230, 243, 255, 0.7) 50%, rgba(255, 255, 255, 0.7) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .book-page::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            right: 15px;
+            bottom: 10px;
+            border: 1px solid rgba(139, 69, 19, 0.4);
+            border-radius: 3px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .page-content {
+            z-index: 3;
+            color: #2C1810;
+            position: relative;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .page-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            font-weight: 400;
+            font-family: 'Georgia', serif;
+            color: #2C1810;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+            letter-spacing: 2px;
+        }
+
+        .page-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            font-family: 'Georgia', serif;
+            color: #3E2723;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+        }
+
+        .page-content p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #2C1810;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .page3, .page4, .page5, .page6 { 
+            background: url('js/vintage-grunge.png') center center / cover no-repeat;
+        }
+
+        .cover-page {
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+            clip-path: none !important;
+            overflow: hidden !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+
+        .cover-page::before,
+        .cover-page::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #8B4513 0%, #D4AF37 50%, #8B4513 100%);
+            z-index: 10;
+            opacity: 0.8;
+        }
+
+        .cover-page::before {
+            top: 10px;
+            left: 10px;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        .cover-page::after {
+            top: 10px;
+            right: 10px;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
+
+        .cover-page img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            display: block !important;
+            filter: none !important;
+            transform: none !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 5 !important;
+            background: #fff !important;
+        }
+
+        .empty-page {
+            padding: 0 !important;
+            background: url('js/vintage-grunge.png') center center / cover no-repeat !important;
+        }
+
+        .empty-page::before {
+            display: none !important;
+        }
+
+        .empty-page::after {
+            display: none !important;
+        }
+
+        .frem-page {
+            padding: 25px !important;
+            background: 
+                linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid #8B4513;
+            border-radius: 15px;
+            box-shadow: 
+                inset 0 0 0 4px #D4AF37,
+                inset 0 0 0 8px #8B4513,
+                0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .frem-page::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .frem-page::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 6px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .frem-image {
+            width: 60% !important;
+            height: 60% !important;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 12px;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .frem-image:hover {
+            transform: scale(1.02);
+            box-shadow: 
+                0 12px 35px rgba(0, 0, 0, 0.2),
+                0 6px 15px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .project-page {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px !important;
+        }
+
+        .project-container {
+            max-width: 100%;
+            text-align: center;
+        }
+
+        .project-image {
+            width: 100%;
+            max-width: 320px;
+            height: 220px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 3px solid rgba(139, 69, 19, 0.5);
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .project-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2C1810;
+            text-align: left;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .project-text p {
+            margin: 0;
+            font-style: normal;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 0 5px;
+        }
+
+        .project-title {
+            font-family: 'Kalam', cursive;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            margin: 0;
+            letter-spacing: 0.2px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .project-title:hover {
+            color: #8B4513;
+            transform: scale(1.05);
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+        }
+
+        .project-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+        }
+
+        .status-indicator.working {
+            background: radial-gradient(circle, #4CAF50 40%, #66BB6A 100%);
+            box-shadow: 
+                0 0 8px rgba(76, 175, 80, 0.8),
+                0 0 16px rgba(76, 175, 80, 0.4);
+            animation: livePulse 1.5s infinite;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .status-indicator.not-working {
+            background: radial-gradient(circle, #F44336 40%, #EF5350 100%);
+            box-shadow: 0 0 6px rgba(244, 67, 54, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes livePulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 
+                    0 0 8px rgba(76, 175, 80, 0.8),
+                    0 0 16px rgba(76, 175, 80, 0.4);
+                background: radial-gradient(circle, #4CAF50 40%, #66BB6A 100%);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 
+                    0 0 12px rgba(76, 175, 80, 1),
+                    0 0 24px rgba(76, 175, 80, 0.6),
+                    0 0 36px rgba(76, 175, 80, 0.3);
+                background: radial-gradient(circle, #66BB6A 30%, #4CAF50 100%);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 
+                    0 0 8px rgba(76, 175, 80, 0.8),
+                    0 0 16px rgba(76, 175, 80, 0.4);
+                background: radial-gradient(circle, #4CAF50 40%, #66BB6A 100%);
+            }
+        }
+
+        .status-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .tech-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        .tech-icon {
+            font-size: 1.3rem;
+            filter: drop-shadow(0.5px 0.5px 1px rgba(0, 0, 0, 0.2));
+            padding: 6px 8px;
+            border-radius: 4px;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tech-icon[title="HTML5"] {
+            color: #E34F26;
+        }
+
+        .tech-icon[title="CSS3"] {
+            color: #1572B6;
+        }
+
+        .tech-icon[title="JavaScript"] {
+            color: #F7DF1E;
+        }
+
+        .tech-icon[title="React"] {
+            color: #61DAFB;
+        }
+
+        .project-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.6rem;
+            line-height: 1.4;
+            color: #2C1810;
+            text-align: left;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            max-width: 280px;
+            margin: 0 auto;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .project-link-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem;
+            color: #000 !important;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            margin: 10px 0 8px 0;
+            word-break: break-all;
+            line-height: 1.3;
+            text-decoration: none;
+            display: block !important;
+            visibility: visible !important;
+            background: #90EE90 !important;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 2px solid #006400 !important;
+            transition: all 0.3s ease;
+            text-align: center;
+            z-index: 999 !important;
+        }
+
+        .project-link-text:hover {
+            background: rgba(255, 215, 0, 0.5);
+            color: #2C1810;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+        }
+
+        .project-link {
+            display: block !important;
+            visibility: visible !important;
+            margin-top: 8px;
+            padding: 10px 15px;
+            background: #FFD700 !important;
+            border: 3px solid #8B4513 !important;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #000 !important;
+            font-family: 'Kalam', cursive;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 999 !important;
+        }
+
+        .project-link::before {
+            content: '🔗 ';
+            margin-right: 4px;
+        }
+
+        .project-link:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 235, 120, 0.5) 50%, rgba(255, 215, 0, 0.4) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+        }
+
+        .project-link::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .project-link:hover::after {
+            left: 100%;
+        }
+
+        .project-details {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px !important;
+        }
+
+        .details-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .details-text {
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: #2C1810;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            max-width: 280px;
+            margin: 0 auto;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .details-text p {
+            margin: 0;
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="flipbook">
+                <div class="book-page page1 cover-page" data-density="hard">
+                    <img src="js/cover.png" alt="Book Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="corner-glow-bottom corner-glow-bottom-left"></div>
+                    <div class="corner-glow-bottom corner-glow-bottom-right"></div>
+                </div>
+                <div class="book-page page2 empty-page">
+                </div>
+                <div class="book-page page3 empty-page">
+                    <div class="page-content project-page">
+                        <div class="project-container">
+                            <img src="js/3rd.png" 
+                                 alt="Project Image" 
+                                 class="project-image">
+                            
+                            <div class="project-header">
+                                <a href="https://deluxe-caramel-4de94a.netlify.app/" target="_blank" class="project-title">Restmood</a>
+                                <div class="project-status">
+                                    <span class="status-indicator working"></span>
+                                    <span class="status-text">Live</span>
+                                </div>
+                            </div>
+                            
+                            <div class="tech-icons">
+                                <i class="devicon-html5-plain tech-icon" title="HTML5"></i>
+                                <i class="devicon-css3-plain tech-icon" title="CSS3"></i>
+                                <i class="devicon-javascript-plain tech-icon" title="JavaScript"></i>
+                                <i class="devicon-react-original tech-icon" title="React"></i>
+                            </div>
+                            
+                            <div class="project-text">
+                                <p>A modern web application built with cutting-edge technologies. This project demonstrates full-stack development capabilities.</p>
+                                <a href="https://deluxe-caramel-4de94a.netlify.app/" target="_blank" class="project-link-text">🌐 https://deluxe-caramel-4de94a.netlify.app/</a>
+                                <a href="https://deluxe-caramel-4de94a.netlify.app/" target="_blank" class="project-link">Visit Live Site</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-page page4 empty-page">
+                    <div class="page-content project-details">
+                        <h3 class="details-title">Project Details</h3>
+                        <div class="details-text">
+                            <p>This project features responsive design and user-friendly interface with modern UI/UX principles. Built using the latest web standards and best practices for optimal performance.</p>
+                            <br>
+                            <p>Key features include interactive components, smooth animations, and cross-browser compatibility ensuring a seamless user experience across all devices.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-page page5 empty-page">
+                </div>
+                <div class="book-page page6 empty-page">
+                </div>
+                <div class="book-page page7 empty-page">
+                </div>
+                <div class="book-page page8 empty-page">
+                </div>
+                <div class="book-page page9 empty-page">
+                </div>
+                <div class="book-page page10 empty-page">
+                </div>
+                <div class="book-page page11 empty-page">
+                </div>
+                <div class="book-page page12 empty-page">
+                </div>
+                <div class="book-page page13 empty-page">
+                </div>
+                <div class="book-page page14 empty-page">
+                </div>
+                <div class="book-page page15 empty-page">
+                </div>
+                <div class="book-page page16 empty-page">
+                </div>
+                <div class="book-page page17 empty-page">
+                </div>
+                <div class="book-page page18 empty-page">
+                </div>
+                <div class="book-page page19 empty-page">
+                </div>
+                <div class="book-page page20 empty-page" data-density="hard">
+                </div>
+            </div>
+
+    <script src="js/flipbook.js"></script>
+    <script>
+        let currentPage = 1;
+        const totalPages = 20;
+        
+        const flipbook = new St.PageFlip(document.getElementById('flipbook'), {
+            width: 380,
+            height: 520,
+            showCover: true,
+            drawShadow: true,
+            flippingTime: 1500,
+            usePortrait: true,
+            startPage: 0,
+            autoSize: true,
+            maxShadowOpacity: 0.8,
+            showPageCorners: true,
+            disableFlipByClick: false,
+            mobileScrollSupport: true,
+            swipeDistance: 30,
+            clickEventForward: false
+        });
+
+        flipbook.loadFromHTML(document.querySelectorAll('.book-page'));
+
+        flipbook.on('flip', (e) => {
+            currentPage = e.data + 1;
+        });
+
+        flipbook.on('changeState', (e) => {
+            console.log('Book state:', e.data);
+            const coverPage = document.querySelector('.cover-page');
+            
+            if (e.data === 'read' && currentPage <= 1) {
+                // Only glow when book is closed and on cover page
+                coverPage.classList.add('glowing');
+            } else {
+                coverPage.classList.remove('glowing');
+            }
+        });
+
+        flipbook.on('flip', (e) => {
+            currentPage = e.data + 1;
+            const coverPage = document.querySelector('.cover-page');
+            
+            // Remove glow when flipping away from cover
+            if (currentPage > 1) {
+                coverPage.classList.remove('glowing');
+            }
+        });
+
+        flipbook.on('init', (e) => {
+            console.log('Flipbook initialized successfully');
+            // Set initial glow on cover page
+            document.querySelector('.cover-page').classList.add('glowing');
+        });
+    </script>
+</body>
+</html>

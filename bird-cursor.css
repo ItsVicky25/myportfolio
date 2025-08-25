@@ -1,0 +1,460 @@
+/* === Demo Styles === */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  cursor: none; /* Hide default cursor */
+}
+
+.demo-container {
+  padding: 20px;
+  color: white;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.demo-container h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.demo-container p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.controls, .theme-controls {
+  margin: 20px 0;
+}
+
+.controls button, .theme-controls button {
+  background: rgba(255,255,255,0.2);
+  border: 2px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.controls button:hover, .theme-controls button:hover {
+  background: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.6);
+  transform: translateY(-2px);
+}
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.settings label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.settings input[type="range"] {
+  margin: 10px 0;
+  width: 100px;
+}
+
+.settings span {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* === Bird Cursor Styles === */
+.bird-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+  transition: filter 0.3s ease;
+}
+
+.bird-container {
+  position: relative;
+  width: 180px;
+  height: 160px;
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+  margin: 0 auto;
+  transform-origin: center;
+  transition: transform 0.1s ease-out;
+}
+
+.bird {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* === Bird Body === */
+.bird-body {
+  position: absolute;
+  width: 100px;
+  height: 75px;
+  background: var(--bird-body-gradient, linear-gradient(160deg, #8B4513 0%, #A0522D 30%, #CD853F 70%, #DEB887 100%));
+  border-radius: 50% 50% 40% 40%;
+  top: 35px;
+  left: 40px;
+  box-shadow: 
+    inset -8px -8px 15px rgba(101, 67, 33, 0.4),
+    inset 5px 0 10px rgba(205, 133, 63, 0.3),
+    3px 3px 12px rgba(0,0,0,0.25);
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* === Feather Details === */
+.feather-detail {
+  position: absolute;
+  width: 15px;
+  height: 8px;
+  background: rgba(222, 184, 135, 0.7);
+  border-radius: 50%;
+  transform-origin: center;
+}
+
+.feather-detail-1 { top: 15px; left: 25px; transform: rotate(20deg); }
+.feather-detail-2 { top: 20px; left: 40px; transform: rotate(-10deg); }
+.feather-detail-3 { top: 25px; left: 55px; transform: rotate(15deg); }
+.feather-detail-4 { top: 30px; left: 70px; transform: rotate(-5deg); }
+
+/* === Bird Breast === */
+.bird-breast {
+  position: absolute;
+  width: 65px;
+  height: 45px;
+  background: var(--bird-breast-gradient, linear-gradient(160deg, #FF8C00 0%, #FF4500 30%, #FF6347 100%));
+  border-radius: 50% 50% 40% 40%;
+  top: 45px;
+  left: 45px;
+  z-index: 3;
+  box-shadow: 
+    inset 0 -5px 8px rgba(139, 0, 0, 0.4),
+    1px 1px 5px rgba(0,0,0,0.15);
+}
+
+/* === Bird Head === */
+.bird-head {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: var(--bird-head-gradient, linear-gradient(160deg, #8B4513 0%, #A0522D 100%));
+  border-radius: 50%;
+  top: 15px;
+  left: 70px;
+  z-index: 3;
+  box-shadow: 
+    inset 0 -8px 12px rgba(69, 34, 0, 0.5),
+    3px 3px 8px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+/* === Head Feathers === */
+.head-feather {
+  position: absolute;
+  width: 8px;
+  height: 15px;
+  background: rgba(205, 133, 63, 0.6);
+  border-radius: 50%;
+}
+
+.head-feather-1 { top: 10px; left: 15px; transform: rotate(30deg); }
+.head-feather-2 { top: 5px; left: 30px; transform: rotate(-20deg); }
+.head-feather-3 { top: 15px; left: 40px; transform: rotate(10deg); }
+
+/* === Bird Eyes === */
+.bird-eye {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #555 0%, #000 50%, #000 100%);
+  border-radius: 50%;
+  top: 25px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 0 8px rgba(255,255,255,0.3),
+    0 0 5px rgba(0,0,0,0.5);
+  z-index: 4;
+}
+
+.bird-eye.left { left: 80px; }
+.bird-eye.right { left: 105px; }
+
+.eye-reflection {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #fff;
+  border-radius: 50%;
+  top: 4px;
+  left: 4px;
+  box-shadow: 0 0 5px rgba(255,255,255,0.9);
+  animation: shine 3s infinite;
+}
+
+.eye-highlight {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  top: 2px;
+  left: 10px;
+}
+
+/* === Bird Beak === */
+.bird-beak {
+  position: absolute;
+  width: 25px;
+  height: 15px;
+  background: linear-gradient(to bottom, #D2691E, #8B4513);
+  border-radius: 50% 50% 5px 5px;
+  top: 35px;
+  left: 120px;
+  z-index: 4;
+  box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+}
+
+.beak-detail {
+  position: absolute;
+  width: 18px;
+  height: 3px;
+  background: #8B4513;
+  top: 7px;
+  left: 3px;
+  border-radius: 2px;
+}
+
+.beak-tip {
+  position: absolute;
+  width: 5px;
+  height: 3px;
+  background: #5D4037;
+  top: 12px;
+  left: 20px;
+  border-radius: 2px;
+}
+
+/* === Bird Wings === */
+.bird-wing {
+  position: absolute;
+  width: 70px;
+  height: 50px;
+  background: linear-gradient(135deg, #5D4037 0%, #8B4513 30%, #A0522D 100%);
+  border-radius: 40% 50% 50% 40%;
+  z-index: 1;
+  transform-origin: top center;
+  box-shadow: 
+    5px 5px 15px rgba(0,0,0,0.4),
+    inset -5px -5px 8px rgba(0,0,0,0.3);
+}
+
+.bird-wing.left {
+  top: 40px;
+  left: 15px;
+}
+
+.bird-wing.right {
+  top: 40px;
+  left: 95px;
+}
+
+.wing-feather {
+  position: absolute;
+  background: linear-gradient(to bottom, #3E2723, #4E342E, #5D4037);
+  border-radius: 50%;
+}
+
+.wing-feather-1 {
+  width: 25px;
+  height: 45px;
+  top: 0;
+  left: 20px;
+  transform: rotate(-5deg);
+  z-index: 2;
+}
+
+.wing-feather-2 {
+  width: 22px;
+  height: 40px;
+  top: 5px;
+  left: 35px;
+  transform: rotate(3deg);
+  z-index: 3;
+}
+
+.wing-feather-3 {
+  width: 20px;
+  height: 35px;
+  top: 10px;
+  left: 45px;
+  transform: rotate(8deg);
+  z-index: 4;
+}
+
+/* === Bird Tail === */
+.bird-tail {
+  position: absolute;
+  width: 50px;
+  height: 30px;
+  background: linear-gradient(to right, #5D4037, #8B4513, #A0522D);
+  border-radius: 50% 0 0 50%;
+  top: 55px;
+  left: 0;
+  transform-origin: left center;
+  z-index: 1;
+  box-shadow: -3px 3px 8px rgba(0,0,0,0.3);
+}
+
+.tail-feather {
+  position: absolute;
+  background: linear-gradient(to right, #4E342E, #5D4037, #795548);
+  border-radius: 50%;
+  transform-origin: left center;
+}
+
+.tail-feather-1 {
+  width: 18px;
+  height: 35px;
+  top: -8px;
+  left: 8px;
+  transform: rotate(8deg);
+}
+
+.tail-feather-2 {
+  width: 15px;
+  height: 30px;
+  top: 3px;
+  left: 20px;
+  transform: rotate(-5deg);
+}
+
+.tail-feather-3 {
+  width: 12px;
+  height: 25px;
+  top: 12px;
+  left: 30px;
+  transform: rotate(5deg);
+}
+
+/* === Animations === */
+@keyframes flap-left {
+  0% { transform: rotate(-30deg); }
+  50% { transform: rotate(15deg); }
+  100% { transform: rotate(-30deg); }
+}
+
+@keyframes flap-right {
+  0% { transform: rotate(30deg); }
+  50% { transform: rotate(-15deg); }
+  100% { transform: rotate(30deg); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes shine {
+  0% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.9; transform: scale(1); }
+}
+
+/* === Flapping Animation === */
+.flapping .bird-wing.left {
+  animation: flap-left 0.8s infinite;
+}
+
+.flapping .bird-wing.right {
+  animation: flap-right 0.8s infinite;
+}
+
+/* === Theme Variants === */
+.bird-container.robin {
+  --bird-body-gradient: linear-gradient(160deg, #8B4513 0%, #A0522D 30%, #CD853F 70%, #DEB887 100%);
+  --bird-breast-gradient: linear-gradient(160deg, #FF8C00 0%, #FF4500 30%, #FF6347 100%);
+  --bird-head-gradient: linear-gradient(160deg, #8B4513 0%, #A0522D 100%);
+}
+
+.bird-container.bluebird {
+  --bird-body-gradient: linear-gradient(160deg, #4682B4 0%, #5F9EA0 30%, #87CEEB 70%, #B0E0E6 100%);
+  --bird-breast-gradient: linear-gradient(160deg, #87CEEB 0%, #4682B4 30%, #1E90FF 100%);
+  --bird-head-gradient: linear-gradient(160deg, #4682B4 0%, #1E90FF 100%);
+}
+
+.bird-container.cardinal {
+  --bird-body-gradient: linear-gradient(160deg, #DC143C 0%, #B22222 30%, #FF0000 70%, #FF6347 100%);
+  --bird-breast-gradient: linear-gradient(160deg, #FF0000 0%, #DC143C 30%, #B22222 100%);
+  --bird-head-gradient: linear-gradient(160deg, #8B0000 0%, #DC143C 100%);
+}
+
+/* === Performance Optimizations === */
+.bird-cursor,
+.bird-container,
+.bird {
+  backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* === Accessibility === */
+@media (prefers-reduced-motion: reduce) {
+  .bird {
+    animation: none;
+  }
+  
+  .flapping .bird-wing.left,
+  .flapping .bird-wing.right {
+    animation: none;
+  }
+  
+  .eye-reflection {
+    animation: none;
+  }
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .bird-container {
+    width: 140px;
+    height: 120px;
+    transform: scale(0.8);
+  }
+  
+  .demo-container h1 {
+    font-size: 2em;
+  }
+  
+  .controls button, .theme-controls button {
+    padding: 8px 16px;
+    margin: 5px;
+    font-size: 12px;
+  }
+  
+  .settings {
+    flex-direction: column;
+    align-items: center;
+  }
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Cursor - Standalone</title>
+    <link rel="stylesheet" href="bird-cursor.css">
+</head>
+<body>
+    <div class="demo-container">
+        <h1>Bird Cursor Demo</h1>
+        <p>Move your mouse around to see the bird follow your cursor!</p>
+        
+        <div class="controls">
+            <button onclick="BirdCursor.setPreset('energetic')">Energetic Bird</button>
+            <button onclick="BirdCursor.setPreset('gentle')">Gentle Bird</button>
+            <button onclick="BirdCursor.setPreset('balanced')">Balanced Bird</button>
+        </div>
+        
+        <div class="theme-controls">
+            <button onclick="BirdCursor.setTheme('robin')">Robin</button>
+            <button onclick="BirdCursor.setTheme('bluebird')">Bluebird</button>
+            <button onclick="BirdCursor.setTheme('cardinal')">Cardinal</button>
+        </div>
+        
+        <div class="settings">
+            <label>
+                Spring Strength: 
+                <input type="range" id="springStrength" min="0.05" max="0.3" step="0.01" value="0.12" onchange="BirdCursor.updatePhysics()">
+                <span id="springValue">0.12</span>
+            </label>
+            
+            <label>
+                Max Speed: 
+                <input type="range" id="maxSpeed" min="5" max="30" step="1" value="15" onchange="BirdCursor.updatePhysics()">
+                <span id="speedValue">15</span>
+            </label>
+            
+            <label>
+                Scale: 
+                <input type="range" id="scale" min="0.2" max="0.8" step="0.05" value="0.45" onchange="BirdCursor.updateScale()">
+                <span id="scaleValue">0.45</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Bird Cursor Element -->
+    <div id="birdCursor" class="bird-cursor">
+        <div class="bird-container">
+            <div class="bird">
+                <div class="bird-body">
+                    <div class="feather-detail feather-detail-1"></div>
+                    <div class="feather-detail feather-detail-2"></div>
+                    <div class="feather-detail feather-detail-3"></div>
+                    <div class="feather-detail feather-detail-4"></div>
+                </div>
+                
+                <div class="bird-breast"></div>
+                
+                <div class="bird-head">
+                    <div class="head-feather head-feather-1"></div>
+                    <div class="head-feather head-feather-2"></div>
+                    <div class="head-feather head-feather-3"></div>
+                </div>
+                
+                <div class="bird-eye left">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="bird-eye right">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                
+                <div class="bird-beak">
+                    <div class="beak-detail"></div>
+                    <div class="beak-tip"></div>
+                </div>
+                
+                <div class="bird-wing left">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                <div class="bird-wing right">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                
+                <div class="bird-tail">
+                    <div class="tail-feather tail-feather-1"></div>
+                    <div class="tail-feather tail-feather-2"></div>
+                    <div class="tail-feather tail-feather-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="bird-cursor.js"></script>
+    <script>
+        // Initialize the bird cursor when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            BirdCursor.init();
+        });
+    </script>
+</body>
+</html>

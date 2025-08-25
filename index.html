@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waterfall Video</title>
+    <link rel="stylesheet" href="vertical-navbar.css">
+    <link href="https://db.onlinewebfonts.com/c/59a2ec451d6c057f39dbf6c66ce60959?family=brushield+Italic" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/2cf22f5c9c38d75f2bcefee18446e49f?family=eLePhAnT+uNcLe" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            background: black;
+        }
+        
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: fill;
+            z-index: 1;
+        }
+        
+        .welcome-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(-100vh);
+            color: rgba(255, 255, 255, 0.95);
+            font-family: 'brushield Italic', sans-serif;
+            font-size: 180px;
+            font-weight: 600;
+            text-align: center;
+            z-index: 2;
+            opacity: 0;
+            filter: blur(10px);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: waterfallDrop 0.6s ease-in 0.1s forwards, waterfallFallOut 2.5s ease-in 3s forwards;
+        }
+        
+        .about-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(-100vh);
+            color: rgba(255, 255, 255, 0.95);
+            font-family: 'brushield Italic', sans-serif;
+            font-size: 140px;
+            font-weight: 500;
+            text-align: center;
+            z-index: 2;
+            opacity: 0;
+            filter: blur(10px);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: waterfallDrop 0.6s ease-in 4s forwards, waterfallFallOut 2.5s ease-in 7s forwards;
+        }
+        
+        .about-card {
+            width: 400px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 0 0px 0px rgba(255, 255, 255, 0);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            overflow: hidden;
+            z-index: 2;
+            opacity: 0;
+            animation: aboutCardAppear 1s ease-out 9s forwards;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.8),
+                transparent
+            );
+        }
+
+        .about-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.8),
+                transparent,
+                rgba(255, 255, 255, 0.3)
+            );
+        }
+        
+        .about-title {
+            color: rgba(0, 0, 0, 0.95);
+            font-family: 'brushield Italic', sans-serif;
+            font-size: 42px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .about-content {
+            color: rgba(0, 0, 0, 0.9);
+            font-family: 'brushield Italic', sans-serif;
+            font-size: 34px;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .about-content p {
+            margin-bottom: 15px;
+        }
+        
+        .skills-list {
+            margin-top: 20px;
+        }
+        
+        .skills-list h4 {
+            color: rgba(0, 0, 0, 0.9);
+            font-family: 'brushield Italic', sans-serif;
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .skills-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .skills-list li {
+            color: rgba(0, 0, 0, 0.8);
+            font-family: 'brushield Italic', sans-serif;
+            font-size: 30px;
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .skills-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: rgba(0, 0, 0, 0.6);
+        }
+        
+        @keyframes aboutCardAppear {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+                filter: blur(0px);
+            }
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: arrowAppear 1s ease-out 10s forwards, arrowAttract 3s ease-in-out infinite 11s;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            pointer-events: auto;
+        }
+        
+        .nav-arrow:hover {
+            color: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            animation-play-state: paused;
+        }
+        
+        .nav-arrow.left-1 {
+            left: 20px;
+            font-size: 120px;
+            animation-delay: 10s, 11s;
+        }
+        
+        .nav-arrow.left-2 {
+            left: 80px;
+            font-size: 90px;
+            animation-delay: 10.1s, 11.3s;
+        }
+        
+        .nav-arrow.right-1 {
+            right: 20px;
+            font-size: 120px;
+            animation-delay: 10.2s, 11.6s;
+        }
+        
+        .nav-arrow.right-2 {
+            right: 80px;
+            font-size: 90px;
+            animation-delay: 10.3s, 11.9s;
+        }
+        
+        /* Arrow Text Styling */
+        .arrow-text {
+            position: absolute;
+            font-size: 28px;
+            font-family: 'brushield Italic', sans-serif;
+            font-weight: 600;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .nav-arrow.left-1 .arrow-text {
+            left: 180px;
+            top: 50%;
+            transform: translateY(-50%) translateX(-20px);
+        }
+        
+        .nav-arrow.right-1 .arrow-text {
+            right: 180px;
+            top: 50%;
+            transform: translateY(-50%) translateX(20px);
+        }
+        
+        .nav-arrow:hover .arrow-text {
+            opacity: 1;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+        
+        .nav-arrow.left-1:hover .arrow-text {
+            transform: translateY(-50%) translateX(0px);
+        }
+        
+        .nav-arrow.right-1:hover .arrow-text {
+            transform: translateY(-50%) translateX(0px);
+        }
+        
+        .nav-arrow .arrow-text {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        
+        @keyframes arrowAttract {
+            0%, 100% {
+                opacity: 0.8;
+                transform: translateY(-50%) scale(1);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+            25% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1.15);
+                text-shadow: 0 0 35px rgba(255, 255, 255, 0.8);
+            }
+            50% {
+                opacity: 0.9;
+                transform: translateY(-50%) scale(1.05);
+                text-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+            }
+            75% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1.2);
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+            }
+        }
+        
+        @keyframes arrowAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) scale(0.5);
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(-50%) scale(0.8);
+                text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            }
+            100% {
+                opacity: 0.8;
+                transform: translateY(-50%) scale(1);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+        }
+        
+        
+        @keyframes waterfallDrop {
+            0% {
+                transform: translate(-50%, -50%) translateY(-100vh);
+                opacity: 0;
+                filter: blur(10px);
+            }
+            100% {
+                transform: translate(-50%, -50%) translateY(0);
+                opacity: 1;
+                filter: blur(0px);
+            }
+        }
+        
+        @keyframes waterfallFallOut {
+            0% {
+                transform: translate(-50%, -50%) translateY(0);
+                opacity: 1;
+                filter: blur(0px);
+                text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+            10% {
+                opacity: 1;
+                filter: blur(1px);
+                text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            }
+            25% {
+                transform: translate(-50%, -50%) translateY(15vh);
+                opacity: 0.95;
+                filter: blur(3px);
+                text-shadow: 0 6px 25px rgba(255, 255, 255, 0.2);
+            }
+            40% {
+                transform: translate(-50%, -50%) translateY(30vh);
+                opacity: 0.8;
+                filter: blur(8px);
+                text-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+            }
+            60% {
+                transform: translate(-50%, -50%) translateY(50vh);
+                opacity: 0.4;
+                filter: blur(15px);
+                text-shadow: 0 10px 40px rgba(255, 255, 255, 0.4);
+            }
+            80% {
+                transform: translate(-50%, -50%) translateY(80vh);
+                opacity: 0.1;
+                filter: blur(25px);
+                text-shadow: 0 15px 50px rgba(255, 255, 255, 0.5);
+            }
+            95% {
+                transform: translate(-50%, -50%) translateY(110vh);
+                opacity: 0.02;
+                filter: blur(35px);
+                text-shadow: 0 20px 60px rgba(255, 255, 255, 0.6);
+            }
+            100% {
+                transform: translate(-50%, -50%) translateY(140vh);
+                opacity: 0;
+                filter: blur(50px);
+                text-shadow: 0 25px 80px rgba(255, 255, 255, 0.7);
+            }
+        }
+        
+        /* === Bird Cursor Styles === */
+        .bird-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            will-change: left, top;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+            transition: filter 0.3s ease;
+            transform: scale(0.5) !important; /* Make bird 50% of original size */
+            left: 0;
+            top: 0;
+        }
+
+        .bird-container {
+            position: relative;
+            width: 90px !important;  /* 180px * 0.5 */
+            height: 80px !important; /* 160px * 0.5 */
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+            margin: 0 auto;
+            transform-origin: center;
+            transition: transform 0.1s ease-out;
+        }
+
+        .bird {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* === Bird Body === */
+        .bird-body {
+            position: absolute;
+            width: 100px;
+            height: 75px;
+            background: var(--bird-body-gradient, linear-gradient(160deg, #8B4513 0%, #A0522D 30%, #CD853F 70%, #DEB887 100%));
+            border-radius: 50% 50% 40% 40%;
+            top: 35px;
+            left: 40px;
+            box-shadow: 
+                inset -8px -8px 15px rgba(101, 67, 33, 0.4),
+                inset 5px 0 10px rgba(205, 133, 63, 0.3),
+                3px 3px 12px rgba(0,0,0,0.25);
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* === Feather Details === */
+        .feather-detail {
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: rgba(222, 184, 135, 0.7);
+            border-radius: 50%;
+            transform-origin: center;
+        }
+
+        .feather-detail-1 { top: 15px; left: 25px; transform: rotate(20deg); }
+        .feather-detail-2 { top: 20px; left: 40px; transform: rotate(-10deg); }
+        .feather-detail-3 { top: 25px; left: 55px; transform: rotate(15deg); }
+        .feather-detail-4 { top: 30px; left: 70px; transform: rotate(-5deg); }
+
+        /* === Bird Breast === */
+        .bird-breast {
+            position: absolute;
+            width: 65px;
+            height: 45px;
+            background: var(--bird-breast-gradient, linear-gradient(160deg, #FF8C00 0%, #FF4500 30%, #FF6347 100%));
+            border-radius: 50% 50% 40% 40%;
+            top: 45px;
+            left: 45px;
+            z-index: 3;
+            box-shadow: 
+                inset 0 -5px 8px rgba(139, 0, 0, 0.4),
+                1px 1px 5px rgba(0,0,0,0.15);
+        }
+
+        /* === Bird Head === */
+        .bird-head {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: var(--bird-head-gradient, linear-gradient(160deg, #8B4513 0%, #A0522D 100%));
+            border-radius: 50%;
+            top: 15px;
+            left: 70px;
+            z-index: 3;
+            box-shadow: 
+                inset 0 -8px 12px rgba(69, 34, 0, 0.5),
+                3px 3px 8px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* === Head Feathers === */
+        .head-feather {
+            position: absolute;
+            width: 8px;
+            height: 15px;
+            background: rgba(205, 133, 63, 0.6);
+            border-radius: 50%;
+        }
+
+        .head-feather-1 { top: 10px; left: 15px; transform: rotate(30deg); }
+        .head-feather-2 { top: 5px; left: 30px; transform: rotate(-20deg); }
+        .head-feather-3 { top: 15px; left: 40px; transform: rotate(10deg); }
+
+        /* === Bird Eyes === */
+        .bird-eye {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle at 30% 30%, #555 0%, #000 50%, #000 100%);
+            border-radius: 50%;
+            top: 25px;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 0 8px rgba(255,255,255,0.3),
+                0 0 5px rgba(0,0,0,0.5);
+            z-index: 4;
+        }
+
+        .bird-eye.left { left: 80px; }
+        .bird-eye.right { left: 105px; }
+
+        .eye-reflection {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background: #fff;
+            border-radius: 50%;
+            top: 4px;
+            left: 4px;
+            box-shadow: 0 0 5px rgba(255,255,255,0.9);
+            animation: shine 3s infinite;
+        }
+
+        .eye-highlight {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            top: 2px;
+            left: 10px;
+        }
+
+        /* === Bird Beak === */
+        .bird-beak {
+            position: absolute;
+            width: 25px;
+            height: 15px;
+            background: linear-gradient(to bottom, #D2691E, #8B4513);
+            border-radius: 50% 50% 5px 5px;
+            top: 35px;
+            left: 120px;
+            z-index: 4;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+        }
+
+        .beak-detail {
+            position: absolute;
+            width: 18px;
+            height: 3px;
+            background: #8B4513;
+            top: 7px;
+            left: 3px;
+            border-radius: 2px;
+        }
+
+        .beak-tip {
+            position: absolute;
+            width: 5px;
+            height: 3px;
+            background: #5D4037;
+            top: 12px;
+            left: 20px;
+            border-radius: 2px;
+        }
+
+        /* === Bird Wings === */
+        .bird-wing {
+            position: absolute;
+            width: 70px;
+            height: 50px;
+            background: linear-gradient(135deg, #5D4037 0%, #8B4513 30%, #A0522D 100%);
+            border-radius: 40% 50% 50% 40%;
+            z-index: 1;
+            transform-origin: top center;
+            box-shadow: 
+                5px 5px 15px rgba(0,0,0,0.4),
+                inset -5px -5px 8px rgba(0,0,0,0.3);
+        }
+
+        .bird-wing.left {
+            top: 40px;
+            left: 15px;
+        }
+
+        .bird-wing.right {
+            top: 40px;
+            left: 95px;
+        }
+
+        .wing-feather {
+            position: absolute;
+            background: linear-gradient(to bottom, #3E2723, #4E342E, #5D4037);
+            border-radius: 50%;
+        }
+
+        .wing-feather-1 {
+            width: 25px;
+            height: 45px;
+            top: 0;
+            left: 20px;
+            transform: rotate(-5deg);
+            z-index: 2;
+        }
+
+        .wing-feather-2 {
+            width: 22px;
+            height: 40px;
+            top: 5px;
+            left: 35px;
+            transform: rotate(3deg);
+            z-index: 3;
+        }
+
+        .wing-feather-3 {
+            width: 20px;
+            height: 35px;
+            top: 10px;
+            left: 45px;
+            transform: rotate(8deg);
+            z-index: 4;
+        }
+
+        /* === Bird Tail === */
+        .bird-tail {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            background: linear-gradient(to right, #5D4037, #8B4513, #A0522D);
+            border-radius: 50% 0 0 50%;
+            top: 55px;
+            left: 0;
+            transform-origin: left center;
+            z-index: 1;
+            box-shadow: -3px 3px 8px rgba(0,0,0,0.3);
+        }
+
+        .tail-feather {
+            position: absolute;
+            background: linear-gradient(to right, #4E342E, #5D4037, #795548);
+            border-radius: 50%;
+            transform-origin: left center;
+        }
+
+        .tail-feather-1 {
+            width: 18px;
+            height: 35px;
+            top: -8px;
+            left: 8px;
+            transform: rotate(8deg);
+        }
+
+        .tail-feather-2 {
+            width: 15px;
+            height: 30px;
+            top: 3px;
+            left: 20px;
+            transform: rotate(-5deg);
+        }
+
+        .tail-feather-3 {
+            width: 12px;
+            height: 25px;
+            top: 12px;
+            left: 30px;
+            transform: rotate(5deg);
+        }
+
+        /* === Animations === */
+        @keyframes flap-left {
+            0% { transform: rotate(-30deg); }
+            50% { transform: rotate(15deg); }
+            100% { transform: rotate(-30deg); }
+        }
+
+        @keyframes flap-right {
+            0% { transform: rotate(30deg); }
+            50% { transform: rotate(-15deg); }
+            100% { transform: rotate(30deg); }
+        }
+
+        @keyframes idle-flap-left {
+            0% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
+        }
+
+        @keyframes idle-flap-right {
+            0% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes shine {
+            0% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.9; transform: scale(1); }
+        }
+
+        /* === Flapping Animation === */
+        .flapping .bird-wing.left {
+            animation: flap-left 0.8s infinite;
+        }
+
+        .flapping .bird-wing.right {
+            animation: flap-right 0.8s infinite;
+        }
+
+        /* === Idle Animation (when not flapping) === */
+        .bird-container:not(.flapping) .bird-wing.left {
+            animation: idle-flap-left 3s ease-in-out infinite;
+        }
+
+        .bird-container:not(.flapping) .bird-wing.right {
+            animation: idle-flap-right 3s ease-in-out infinite;
+        }
+
+        /* Active flapping animation when moving */
+        .flapping .bird-wing.left {
+            animation: flap-left 0.8s infinite !important;
+        }
+
+        .flapping .bird-wing.right {
+            animation: flap-right 0.8s infinite !important;
+        }
+
+        /* === Performance Optimizations === */
+        .bird-cursor,
+        .bird-container,
+        .bird {
+            backface-visibility: hidden;
+            perspective: 1000px;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        
+        /* === Small Bird Styles === */
+        .bird-cursor-small {
+            transform: scale(0.4) !important; /* Make second bird bigger (40% of original) */
+            z-index: 9998; /* Behind the main bird */
+        }
+        
+        .bird-cursor-small .bird-container {
+            width: 72px !important;  /* 180px * 0.4 */
+            height: 64px !important; /* 160px * 0.4 */
+        }
+        
+        /* Different color for second bird */
+        .bird-cursor-small .bird-body {
+            background: linear-gradient(160deg, #4682B4 0%, #5F9EA0 30%, #87CEEB 70%, #B0E0E6 100%) !important;
+        }
+        
+        .bird-cursor-small .bird-breast {
+            background: linear-gradient(160deg, #87CEEB 0%, #4682B4 30%, #1E90FF 100%) !important;
+        }
+        
+        .bird-cursor-small .bird-head {
+            background: linear-gradient(160deg, #4682B4 0%, #1E90FF 100%) !important;
+        }
+        
+        /* === Transition Birds Container === */
+        .transition-birds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .transition-birds.active {
+            opacity: 1;
+        }
+        
+        .transition-bird {
+            position: absolute;
+            transition: transform 0.2s ease;
+        }
+        
+        /* Different bird sizes */
+        .transition-bird:nth-child(1) { 
+            transform: scale(0.4); /* Small */
+            top: 15%; 
+            animation-delay: 0s;
+        }
+        .transition-bird:nth-child(2) { 
+            transform: scale(0.8); /* Large */
+            top: 25%; 
+            animation-delay: 0.1s;
+        }
+        .transition-bird:nth-child(3) { 
+            transform: scale(0.6); /* Medium */
+            top: 40%; 
+            animation-delay: 0.3s;
+        }
+        .transition-bird:nth-child(4) { 
+            transform: scale(0.9); /* Extra Large */
+            top: 55%; 
+            animation-delay: 0.2s;
+        }
+        .transition-bird:nth-child(5) { 
+            transform: scale(0.5); /* Small-Medium */
+            top: 70%; 
+            animation-delay: 0.4s;
+        }
+        .transition-bird:nth-child(6) { 
+            transform: scale(0.7); /* Medium-Large */
+            top: 85%; 
+            animation-delay: 0.15s;
+        }
+        
+        /* Racing patterns for flying right (left to right) */
+        @keyframes flyRight1 {
+            0% { left: -150px; top: 15%; transform: scale(0.4) scaleX(1); }
+            25% { left: 25vw; top: 10%; }
+            50% { left: 50vw; top: 20%; }
+            75% { left: 75vw; top: 12%; }
+            100% { left: 100vw; top: 18%; transform: scale(0.4) scaleX(1); }
+        }
+        
+        @keyframes flyRight2 {
+            0% { left: -200px; top: 25%; transform: scale(0.8) scaleX(1); }
+            20% { left: 20vw; top: 30%; }
+            60% { left: 60vw; top: 20%; }
+            100% { left: 100vw; top: 28%; transform: scale(0.8) scaleX(1); }
+        }
+        
+        @keyframes flyRight3 {
+            0% { left: -150px; top: 40%; transform: scale(0.6) scaleX(1); }
+            30% { left: 30vw; top: 35%; }
+            70% { left: 70vw; top: 45%; }
+            100% { left: 100vw; top: 38%; transform: scale(0.6) scaleX(1); }
+        }
+        
+        @keyframes flyRight4 {
+            0% { left: -250px; top: 55%; transform: scale(0.9) scaleX(1); }
+            15% { left: 15vw; top: 50%; }
+            40% { left: 40vw; top: 60%; }
+            80% { left: 80vw; top: 52%; }
+            100% { left: 100vw; top: 58%; transform: scale(0.9) scaleX(1); }
+        }
+        
+        @keyframes flyRight5 {
+            0% { left: -150px; top: 70%; transform: scale(0.5) scaleX(1); }
+            35% { left: 35vw; top: 75%; }
+            65% { left: 65vw; top: 68%; }
+            100% { left: 100vw; top: 72%; transform: scale(0.5) scaleX(1); }
+        }
+        
+        @keyframes flyRight6 {
+            0% { left: -180px; top: 85%; transform: scale(0.7) scaleX(1); }
+            25% { left: 25vw; top: 80%; }
+            55% { left: 55vw; top: 88%; }
+            100% { left: 100vw; top: 83%; transform: scale(0.7) scaleX(1); }
+        }
+        
+        /* Racing patterns for flying left (right to left) */
+        @keyframes flyLeft1 {
+            0% { left: 100vw; top: 15%; transform: scale(0.4) scaleX(-1); }
+            25% { left: 75vw; top: 20%; }
+            50% { left: 50vw; top: 10%; }
+            75% { left: 25vw; top: 18%; }
+            100% { left: -150px; top: 12%; transform: scale(0.4) scaleX(-1); }
+        }
+        
+        @keyframes flyLeft2 {
+            0% { left: 100vw; top: 25%; transform: scale(0.8) scaleX(-1); }
+            20% { left: 80vw; top: 20%; }
+            60% { left: 40vw; top: 30%; }
+            100% { left: -200px; top: 28%; transform: scale(0.8) scaleX(-1); }
+        }
+        
+        @keyframes flyLeft3 {
+            0% { left: 100vw; top: 40%; transform: scale(0.6) scaleX(-1); }
+            30% { left: 70vw; top: 45%; }
+            70% { left: 30vw; top: 35%; }
+            100% { left: -150px; top: 42%; transform: scale(0.6) scaleX(-1); }
+        }
+        
+        @keyframes flyLeft4 {
+            0% { left: 100vw; top: 55%; transform: scale(0.9) scaleX(-1); }
+            15% { left: 85vw; top: 60%; }
+            40% { left: 60vw; top: 50%; }
+            80% { left: 20vw; top: 58%; }
+            100% { left: -250px; top: 52%; transform: scale(0.9) scaleX(-1); }
+        }
+        
+        @keyframes flyLeft5 {
+            0% { left: 100vw; top: 70%; transform: scale(0.5) scaleX(-1); }
+            35% { left: 65vw; top: 68%; }
+            65% { left: 35vw; top: 75%; }
+            100% { left: -150px; top: 72%; transform: scale(0.5) scaleX(-1); }
+        }
+        
+        @keyframes flyLeft6 {
+            0% { left: 100vw; top: 85%; transform: scale(0.7) scaleX(-1); }
+            25% { left: 75vw; top: 88%; }
+            55% { left: 45vw; top: 80%; }
+            100% { left: -180px; top: 86%; transform: scale(0.7) scaleX(-1); }
+        }
+        
+        /* Animation classes for each bird */
+        .transition-bird:nth-child(1).fly-right { animation: flyRight1 1.8s ease-in-out forwards; }
+        .transition-bird:nth-child(2).fly-right { animation: flyRight2 1.5s ease-in-out forwards; }
+        .transition-bird:nth-child(3).fly-right { animation: flyRight3 2.2s ease-in-out forwards; }
+        .transition-bird:nth-child(4).fly-right { animation: flyRight4 1.3s ease-in-out forwards; }
+        .transition-bird:nth-child(5).fly-right { animation: flyRight5 2.0s ease-in-out forwards; }
+        .transition-bird:nth-child(6).fly-right { animation: flyRight6 1.7s ease-in-out forwards; }
+        
+        .transition-bird:nth-child(1).fly-left { animation: flyLeft1 1.8s ease-in-out forwards; }
+        .transition-bird:nth-child(2).fly-left { animation: flyLeft2 1.5s ease-in-out forwards; }
+        .transition-bird:nth-child(3).fly-left { animation: flyLeft3 2.2s ease-in-out forwards; }
+        .transition-bird:nth-child(4).fly-left { animation: flyLeft4 1.3s ease-in-out forwards; }
+        .transition-bird:nth-child(5).fly-left { animation: flyLeft5 2.0s ease-in-out forwards; }
+        .transition-bird:nth-child(6).fly-left { animation: flyLeft6 1.7s ease-in-out forwards; }
+        
+        .transition-bird .bird-container {
+            width: 90px !important;
+            height: 80px !important;
+        }
+        
+        /* Unique colors for each transition bird */
+        
+        /* Bird 1 - Tropical Orange */
+        .transition-bird:nth-child(1) .bird-body {
+            background: linear-gradient(160deg, #FF6B35 0%, #F7931E 30%, #FFB347 70%, #FF8C42 100%) !important;
+        }
+        .transition-bird:nth-child(1) .bird-breast {
+            background: linear-gradient(160deg, #FF8C42 0%, #FF6B35 30%, #E55B3C 100%) !important;
+        }
+        .transition-bird:nth-child(1) .bird-head {
+            background: linear-gradient(160deg, #FF6B35 0%, #E55B3C 100%) !important;
+        }
+        
+        /* Bird 2 - Ocean Blue */
+        .transition-bird:nth-child(2) .bird-body {
+            background: linear-gradient(160deg, #0984e3 0%, #74b9ff 30%, #00cec9 70%, #00b894 100%) !important;
+        }
+        .transition-bird:nth-child(2) .bird-breast {
+            background: linear-gradient(160deg, #00cec9 0%, #0984e3 30%, #006ba6 100%) !important;
+        }
+        .transition-bird:nth-child(2) .bird-head {
+            background: linear-gradient(160deg, #0984e3 0%, #006ba6 100%) !important;
+        }
+        
+        /* Bird 3 - Emerald Green */
+        .transition-bird:nth-child(3) .bird-body {
+            background: linear-gradient(160deg, #00b894 0%, #00cec9 30%, #55efc4 70%, #81ecec 100%) !important;
+        }
+        .transition-bird:nth-child(3) .bird-breast {
+            background: linear-gradient(160deg, #55efc4 0%, #00b894 30%, #027353 100%) !important;
+        }
+        .transition-bird:nth-child(3) .bird-head {
+            background: linear-gradient(160deg, #00b894 0%, #027353 100%) !important;
+        }
+        
+        /* Bird 4 - Royal Purple */
+        .transition-bird:nth-child(4) .bird-body {
+            background: linear-gradient(160deg, #6c5ce7 0%, #a29bfe 30%, #fd79a8 70%, #e84393 100%) !important;
+        }
+        .transition-bird:nth-child(4) .bird-breast {
+            background: linear-gradient(160deg, #fd79a8 0%, #6c5ce7 30%, #5f3dc4 100%) !important;
+        }
+        .transition-bird:nth-child(4) .bird-head {
+            background: linear-gradient(160deg, #6c5ce7 0%, #5f3dc4 100%) !important;
+        }
+        
+        /* Bird 5 - Sunset Yellow */
+        .transition-bird:nth-child(5) .bird-body {
+            background: linear-gradient(160deg, #fdcb6e 0%, #f39c12 30%, #e17055 70%, #d63031 100%) !important;
+        }
+        .transition-bird:nth-child(5) .bird-breast {
+            background: linear-gradient(160deg, #f39c12 0%, #fdcb6e 30%, #e17055 100%) !important;
+        }
+        .transition-bird:nth-child(5) .bird-head {
+            background: linear-gradient(160deg, #fdcb6e 0%, #e17055 100%) !important;
+        }
+        
+        /* Bird 6 - Rose Pink */
+        .transition-bird:nth-child(6) .bird-body {
+            background: linear-gradient(160deg, #e84393 0%, #fd79a8 30%, #fdcb6e 70%, #f39c12 100%) !important;
+        }
+        .transition-bird:nth-child(6) .bird-breast {
+            background: linear-gradient(160deg, #fd79a8 0%, #e84393 30%, #d63031 100%) !important;
+        }
+        .transition-bird:nth-child(6) .bird-head {
+            background: linear-gradient(160deg, #e84393 0%, #d63031 100%) !important;
+        }
+        
+        /* Flapping animation for transition birds */
+        .transition-bird .bird-wing.left {
+            animation: flap-left 0.4s infinite !important;
+        }
+        
+        .transition-bird .bird-wing.right {
+            animation: flap-right 0.4s infinite !important;
+        }
+        
+    </style>
+</head>
+<body>
+    <video id="videoPlayer" loop muted playsinline>
+        <source src="waterfall.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="glass-card">
+        <div class="nav-icon home-icon" title="Home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9M19 10L21 12M19 10V20C19 20.5523 18.5523 21 18 21H15M9 21C9.55228 21 10 20.5523 10 20V16C10 15.4477 10.4477 15 11 15H13C13.5523 15 14 15.4477 14 16V20C14 20.5523 14.4477 21 15 21M9 21H15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon twitter-icon" title="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon github-icon" title="GitHub">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon kaggle-icon" title="Kaggle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.493c0-.236.118-.353.354-.353h2.431c.234 0 .351.117.351.353v14.343l6.203-6.272c.165-.165.33-.248.495-.248h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.297"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon medium-icon" title="Medium">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon linkedin-icon" title="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon contact-icon" title="Contact">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="22,6 12,13 2,6" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <div class="nav-icon audio-icon" title="Toggle Audio">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                <line x1="23" y1="9" x2="17" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+                <line x1="17" y1="9" x2="23" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Navbar Toggle Arrow -->
+    <div class="navbar-toggle" id="navbarToggle">
+        <div class="toggle-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </div>
+    
+    <h1 class="welcome-message">Welcome to My Portfolio</h1>
+    <h2 class="about-message">Explore My Creative Journey</h2>
+    
+    <div class="about-card" id="about-card">
+        <h2 class="about-title">About Me</h2>
+        <div class="about-content">
+            <!-- Description content will be added later -->
+            
+            <!-- Empty space for future content -->
+            <div class="skills-list">
+                <!-- Content will be added later -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-arrow left-1">
+        ‹
+        <span class="arrow-text" onclick="triggerBirdTransition('left', 'projects.html')">Go for Projects</span>
+    </div>
+    <div class="nav-arrow left-2">‹</div>
+    <div class="nav-arrow right-1">
+        ›
+        <span class="arrow-text" onclick="triggerBirdTransition('right', 'learning-journey.html')">Explore My Learning Journey</span>
+    </div>
+    <div class="nav-arrow right-2">›</div>
+    
+    <!-- Bird Cursor Element -->
+    <div id="birdCursor" class="bird-cursor">
+        <div class="bird-container">
+            <div class="bird">
+                <div class="bird-body">
+                    <div class="feather-detail feather-detail-1"></div>
+                    <div class="feather-detail feather-detail-2"></div>
+                    <div class="feather-detail feather-detail-3"></div>
+                    <div class="feather-detail feather-detail-4"></div>
+                </div>
+                
+                <div class="bird-breast"></div>
+                
+                <div class="bird-head">
+                    <div class="head-feather head-feather-1"></div>
+                    <div class="head-feather head-feather-2"></div>
+                    <div class="head-feather head-feather-3"></div>
+                </div>
+                
+                <div class="bird-eye left">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="bird-eye right">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                
+                <div class="bird-beak">
+                    <div class="beak-detail"></div>
+                    <div class="beak-tip"></div>
+                </div>
+                
+                <div class="bird-wing left">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                <div class="bird-wing right">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                
+                <div class="bird-tail">
+                    <div class="tail-feather tail-feather-1"></div>
+                    <div class="tail-feather tail-feather-2"></div>
+                    <div class="tail-feather tail-feather-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Second Smaller Bird -->
+    <div id="birdCursor2" class="bird-cursor bird-cursor-small">
+        <div class="bird-container">
+            <div class="bird">
+                <div class="bird-body">
+                    <div class="feather-detail feather-detail-1"></div>
+                    <div class="feather-detail feather-detail-2"></div>
+                    <div class="feather-detail feather-detail-3"></div>
+                    <div class="feather-detail feather-detail-4"></div>
+                </div>
+                
+                <div class="bird-breast"></div>
+                
+                <div class="bird-head">
+                    <div class="head-feather head-feather-1"></div>
+                    <div class="head-feather head-feather-2"></div>
+                    <div class="head-feather head-feather-3"></div>
+                </div>
+                
+                <div class="bird-eye left">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="bird-eye right">
+                    <div class="eye-reflection"></div>
+                    <div class="eye-highlight"></div>
+                </div>
+                
+                <div class="bird-beak">
+                    <div class="beak-detail"></div>
+                    <div class="beak-tip"></div>
+                </div>
+                
+                <div class="bird-wing left">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                <div class="bird-wing right">
+                    <div class="wing-feather wing-feather-1"></div>
+                    <div class="wing-feather wing-feather-2"></div>
+                    <div class="wing-feather wing-feather-3"></div>
+                </div>
+                
+                <div class="bird-tail">
+                    <div class="tail-feather tail-feather-1"></div>
+                    <div class="tail-feather tail-feather-2"></div>
+                    <div class="tail-feather tail-feather-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Transition Birds Container -->
+    <div id="transitionBirds" class="transition-birds">
+        <!-- Bird 1 -->
+        <div class="transition-bird">
+            <div class="bird-container">
+                <div class="bird">
+                    <div class="bird-body">
+                        <div class="feather-detail feather-detail-1"></div>
+                        <div class="feather-detail feather-detail-2"></div>
+                        <div class="feather-detail feather-detail-3"></div>
+                        <div class="feather-detail feather-detail-4"></div>
+                    </div>
+                    <div class="bird-breast"></div>
+                    <div class="bird-head">
+                        <div class="head-feather head-feather-1"></div>
+                        <div class="head-feather head-feather-2"></div>
+                        <div class="head-feather head-feather-3"></div>
+                    </div>
+                    <div class="bird-eye left">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-eye right">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-beak">
+                        <div class="beak-detail"></div>
+                        <div class="beak-tip"></div>
+                    </div>
+                    <div class="bird-wing left">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-wing right">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-tail">
+                        <div class="tail-feather tail-feather-1"></div>
+                        <div class="tail-feather tail-feather-2"></div>
+                        <div class="tail-feather tail-feather-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bird 2 -->
+        <div class="transition-bird">
+            <div class="bird-container">
+                <div class="bird">
+                    <div class="bird-body">
+                        <div class="feather-detail feather-detail-1"></div>
+                        <div class="feather-detail feather-detail-2"></div>
+                        <div class="feather-detail feather-detail-3"></div>
+                        <div class="feather-detail feather-detail-4"></div>
+                    </div>
+                    <div class="bird-breast"></div>
+                    <div class="bird-head">
+                        <div class="head-feather head-feather-1"></div>
+                        <div class="head-feather head-feather-2"></div>
+                        <div class="head-feather head-feather-3"></div>
+                    </div>
+                    <div class="bird-eye left">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-eye right">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-beak">
+                        <div class="beak-detail"></div>
+                        <div class="beak-tip"></div>
+                    </div>
+                    <div class="bird-wing left">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-wing right">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-tail">
+                        <div class="tail-feather tail-feather-1"></div>
+                        <div class="tail-feather tail-feather-2"></div>
+                        <div class="tail-feather tail-feather-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bird 3 -->
+        <div class="transition-bird">
+            <div class="bird-container">
+                <div class="bird">
+                    <div class="bird-body">
+                        <div class="feather-detail feather-detail-1"></div>
+                        <div class="feather-detail feather-detail-2"></div>
+                        <div class="feather-detail feather-detail-3"></div>
+                        <div class="feather-detail feather-detail-4"></div>
+                    </div>
+                    <div class="bird-breast"></div>
+                    <div class="bird-head">
+                        <div class="head-feather head-feather-1"></div>
+                        <div class="head-feather head-feather-2"></div>
+                        <div class="head-feather head-feather-3"></div>
+                    </div>
+                    <div class="bird-eye left">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-eye right">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-beak">
+                        <div class="beak-detail"></div>
+                        <div class="beak-tip"></div>
+                    </div>
+                    <div class="bird-wing left">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-wing right">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-tail">
+                        <div class="tail-feather tail-feather-1"></div>
+                        <div class="tail-feather tail-feather-2"></div>
+                        <div class="tail-feather tail-feather-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bird 4 -->
+        <div class="transition-bird">
+            <div class="bird-container">
+                <div class="bird">
+                    <div class="bird-body">
+                        <div class="feather-detail feather-detail-1"></div>
+                        <div class="feather-detail feather-detail-2"></div>
+                        <div class="feather-detail feather-detail-3"></div>
+                        <div class="feather-detail feather-detail-4"></div>
+                    </div>
+                    <div class="bird-breast"></div>
+                    <div class="bird-head">
+                        <div class="head-feather head-feather-1"></div>
+                        <div class="head-feather head-feather-2"></div>
+                        <div class="head-feather head-feather-3"></div>
+                    </div>
+                    <div class="bird-eye left">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-eye right">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-beak">
+                        <div class="beak-detail"></div>
+                        <div class="beak-tip"></div>
+                    </div>
+                    <div class="bird-wing left">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-wing right">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-tail">
+                        <div class="tail-feather tail-feather-1"></div>
+                        <div class="tail-feather tail-feather-2"></div>
+                        <div class="tail-feather tail-feather-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bird 5 -->
+        <div class="transition-bird">
+            <div class="bird-container">
+                <div class="bird">
+                    <div class="bird-body">
+                        <div class="feather-detail feather-detail-1"></div>
+                        <div class="feather-detail feather-detail-2"></div>
+                        <div class="feather-detail feather-detail-3"></div>
+                        <div class="feather-detail feather-detail-4"></div>
+                    </div>
+                    <div class="bird-breast"></div>
+                    <div class="bird-head">
+                        <div class="head-feather head-feather-1"></div>
+                        <div class="head-feather head-feather-2"></div>
+                        <div class="head-feather head-feather-3"></div>
+                    </div>
+                    <div class="bird-eye left">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-eye right">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-beak">
+                        <div class="beak-detail"></div>
+                        <div class="beak-tip"></div>
+                    </div>
+                    <div class="bird-wing left">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-wing right">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-tail">
+                        <div class="tail-feather tail-feather-1"></div>
+                        <div class="tail-feather tail-feather-2"></div>
+                        <div class="tail-feather tail-feather-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bird 6 -->
+        <div class="transition-bird">
+            <div class="bird-container">
+                <div class="bird">
+                    <div class="bird-body">
+                        <div class="feather-detail feather-detail-1"></div>
+                        <div class="feather-detail feather-detail-2"></div>
+                        <div class="feather-detail feather-detail-3"></div>
+                        <div class="feather-detail feather-detail-4"></div>
+                    </div>
+                    <div class="bird-breast"></div>
+                    <div class="bird-head">
+                        <div class="head-feather head-feather-1"></div>
+                        <div class="head-feather head-feather-2"></div>
+                        <div class="head-feather head-feather-3"></div>
+                    </div>
+                    <div class="bird-eye left">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-eye right">
+                        <div class="eye-reflection"></div>
+                        <div class="eye-highlight"></div>
+                    </div>
+                    <div class="bird-beak">
+                        <div class="beak-detail"></div>
+                        <div class="beak-tip"></div>
+                    </div>
+                    <div class="bird-wing left">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-wing right">
+                        <div class="wing-feather wing-feather-1"></div>
+                        <div class="wing-feather wing-feather-2"></div>
+                        <div class="wing-feather wing-feather-3"></div>
+                    </div>
+                    <div class="bird-tail">
+                        <div class="tail-feather tail-feather-1"></div>
+                        <div class="tail-feather tail-feather-2"></div>
+                        <div class="tail-feather tail-feather-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Device detection and redirection
+        function detectDeviceAndRedirect() {
+            const screenWidth = window.innerWidth;
+            
+            // Redirect to mobile if screen width is 768px or less (mobile/tablet size)
+            if (screenWidth <= 768) {
+                window.location.href = 'mobile.html';
+                return;
+            }
+        }
+        
+        // Run device detection when page loads
+        detectDeviceAndRedirect();
+        
+        // Also check on window resize (for responsive testing)
+        window.addEventListener('resize', detectDeviceAndRedirect);
+        
+        const video = document.getElementById('videoPlayer');
+        
+        // Force play when page loads
+        window.addEventListener('load', () => {
+            video.play().catch(e => {
+                console.log('Autoplay prevented:', e);
+                // Click anywhere to start video if autoplay is blocked
+                document.addEventListener('click', () => {
+                    video.play();
+                }, { once: true });
+            });
+        });
+        
+        // Ensure seamless infinite loop
+        video.addEventListener('ended', () => {
+            video.currentTime = 0;
+            video.play();
+        });
+        
+        // Additional loop handling to prevent gaps
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime >= video.duration - 0.1) {
+                video.currentTime = 0;
+            }
+        });
+        
+        
+        // Audio functionality
+        let backgroundAudio = null;
+        let isAudioMuted = localStorage.getItem('audioMuted') !== 'false';
+        
+        // Initialize background audio
+        function initAudio() {
+            backgroundAudio = new Audio('jungle.mp3');
+            backgroundAudio.loop = true;
+            backgroundAudio.volume = 0.3; // Set to 30% volume
+            
+            // Preload the audio
+            backgroundAudio.preload = 'auto';
+            
+            backgroundAudio.addEventListener('canplaythrough', () => {
+                console.log('Background audio loaded and ready');
+            });
+            
+            backgroundAudio.addEventListener('error', (e) => {
+                console.error('Error loading background audio:', e);
+            });
+        }
+        
+        function toggleAudio() {
+            const audioIcon = document.querySelector('.audio-icon svg');
+            
+            if (!backgroundAudio) {
+                initAudio();
+            }
+            
+            isAudioMuted = !isAudioMuted;
+            localStorage.setItem('audioMuted', isAudioMuted);
+            
+            if (isAudioMuted) {
+                // Pause audio
+                if (backgroundAudio) {
+                    backgroundAudio.pause();
+                }
+                // Muted icon (speaker with X)
+                audioIcon.innerHTML = `
+                    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                    <line x1="23" y1="9" x2="17" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="17" y1="9" x2="23" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+                `;
+            } else {
+                // Play audio
+                if (backgroundAudio) {
+                    backgroundAudio.play().catch(e => {
+                        console.log('Autoplay prevented, user interaction required:', e);
+                    });
+                }
+                // Unmuted icon (speaker with sound waves)
+                audioIcon.innerHTML = `
+                    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                    <path d="M19.07 4.93C20.97 6.83 21.97 9.35 21.97 12C21.97 14.65 20.97 17.17 19.07 19.07M15.54 8.46C16.49 9.41 16.97 10.7 16.97 12C16.97 13.3 16.49 14.59 15.54 15.54" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                `;
+            }
+            
+            console.log(`Background audio ${isAudioMuted ? 'muted' : 'playing'}`);
+        }
+
+        // Navigation functionality for navbar icons
+        document.querySelectorAll('.nav-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                this.classList.add('bubble-click');
+                setTimeout(() => {
+                    this.classList.remove('bubble-click');
+                }, 600);
+                
+                // Handle navigation based on icon class
+                if (this.classList.contains('home-icon')) {
+                    window.location.href = 'index.html';
+                } else if (this.classList.contains('twitter-icon')) {
+                    window.open('https://x.com/mrathaur704', '_blank');
+                } else if (this.classList.contains('github-icon')) {
+                    window.open('https://github.com/ItsVicky25', '_blank');
+                } else if (this.classList.contains('kaggle-icon')) {
+                    window.open('https://www.kaggle.com/manishrathaur', '_blank');
+                } else if (this.classList.contains('medium-icon')) {
+                    window.open('https://medium.com/@manishrathaur10', '_blank');
+                } else if (this.classList.contains('linkedin-icon')) {
+                    window.open('https://www.linkedin.com/in/manish-rathaur-80b40b24a/', '_blank');
+                } else if (this.classList.contains('contact-icon')) {
+                    window.location.href = 'mailto:mrathau704@gmail.com';
+                } else if (this.classList.contains('audio-icon')) {
+                    toggleAudio();
+                }
+            });
+        });
+        
+        // Initialize audio when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initAudio();
+            
+            // Set initial audio icon based on saved state
+            if (!isAudioMuted) {
+                const audioIcon = document.querySelector('.audio-icon svg');
+                if (audioIcon) {
+                    audioIcon.innerHTML = `
+                        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.9)"/>
+                        <path d="M19.07 4.93C20.97 6.83 21.97 9.35 21.97 12C21.97 14.65 20.97 17.17 19.07 19.07M15.54 8.46C16.49 9.41 16.97 10.7 16.97 12C16.97 13.3 16.49 14.59 15.54 15.54" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    `;
+                    if (backgroundAudio) {
+                        backgroundAudio.play().catch(e => console.log('Autoplay prevented:', e));
+                    }
+                }
+            }
+        });
+        
+        // Navbar slide-in/out functionality
+        const navbar = document.querySelector('.glass-card');
+        const navbarToggle = document.getElementById('navbarToggle');
+        let hideTimeout;
+        let isNavbarOpen = false;
+        
+        // Navbar starts hidden, user controls with toggle button
+
+        // Navbar Toggle Functionality
+        navbarToggle.addEventListener('click', () => {
+            isNavbarOpen = !isNavbarOpen;
+            
+            if (isNavbarOpen) {
+                navbar.classList.add('show');
+                navbarToggle.classList.add('navbar-open');
+                clearTimeout(hideTimeout);
+            } else {
+                navbar.classList.remove('show');
+                navbarToggle.classList.remove('navbar-open');
+            }
+        });
+        
+        // Bird Transition Function
+        function triggerBirdTransition(direction, url) {
+            const transitionContainer = document.getElementById('transitionBirds');
+            const birds = transitionContainer.querySelectorAll('.transition-bird');
+            
+            // Remove any existing animation classes
+            birds.forEach(bird => {
+                bird.classList.remove('fly-left', 'fly-right');
+            });
+            
+            // Force reflow to ensure clean state
+            transitionContainer.offsetHeight;
+            
+            // Show transition container
+            transitionContainer.classList.add('active');
+            
+            // Add appropriate animation class based on direction
+            if (direction === 'right') {
+                birds.forEach(bird => {
+                    bird.classList.add('fly-right');
+                });
+            } else {
+                birds.forEach(bird => {
+                    bird.classList.add('fly-left');
+                });
+            }
+            
+            // Navigate after animation completes
+            setTimeout(() => {
+                window.location.href = url;
+            }, 2500); // Wait for animation to complete
+        }
+        
+        // Reset transition birds (for when returning to page)
+        function resetTransitionBirds() {
+            const transitionContainer = document.getElementById('transitionBirds');
+            const birds = transitionContainer.querySelectorAll('.transition-bird');
+            
+            transitionContainer.classList.remove('active');
+            birds.forEach(bird => {
+                bird.classList.remove('fly-left', 'fly-right');
+            });
+        }
+        
+        
+    </script>
+    <script>
+        // Dual Bird Cursor System with Wing Flapping
+        let birdElement1 = null;
+        let birdElement2 = null;
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // First bird (follows mouse)
+        let bird1X = 0;
+        let bird1Y = 0;
+        let prevBird1X = 0;
+        let prevBird1Y = 0;
+        let isFlapping1 = false;
+        
+        // Second bird (follows first bird)
+        let bird2X = 0;
+        let bird2Y = 0;
+        let prevBird2X = 0;
+        let prevBird2Y = 0;
+        let isFlapping2 = false;
+        
+        function initBirdCursor() {
+            console.log('Initializing dual bird cursor...');
+            
+            birdElement1 = document.getElementById('birdCursor');
+            birdElement2 = document.getElementById('birdCursor2');
+            
+            if (!birdElement1 || !birdElement2) {
+                console.error('Bird cursor elements not found');
+                return;
+            }
+            
+            // Set initial positions
+            bird1X = window.innerWidth / 2;
+            bird1Y = window.innerHeight / 2;
+            bird2X = bird1X - 80; // Start behind first bird
+            bird2Y = bird1Y + 20;
+            
+            prevBird1X = bird1X;
+            prevBird1Y = bird1Y;
+            prevBird2X = bird2X;
+            prevBird2Y = bird2Y;
+            
+            // Track mouse movement
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            // Start animation loop
+            animateBirds();
+            console.log('Dual bird cursor initialized successfully');
+        }
+        
+        function animateBirds() {
+            if (!birdElement1 || !birdElement2) return;
+            
+            // Store previous positions
+            prevBird1X = bird1X;
+            prevBird1Y = bird1Y;
+            prevBird2X = bird2X;
+            prevBird2Y = bird2Y;
+            
+            // === FIRST BIRD (follows mouse) ===
+            const speed1 = 0.15;
+            bird1X += (mouseX - bird1X) * speed1;
+            bird1Y += (mouseY - bird1Y) * speed1;
+            
+            // Calculate movement speed for flapping
+            const deltaX1 = bird1X - prevBird1X;
+            const deltaY1 = bird1Y - prevBird1Y;
+            const movementSpeed1 = Math.sqrt(deltaX1 * deltaX1 + deltaY1 * deltaY1);
+            const shouldFlap1 = movementSpeed1 > 0.5;
+            
+            // Calculate direction for flipping
+            const mouseDirection1 = mouseX - bird1X;
+            const scaleX1 = mouseDirection1 >= 0 ? 1 : -1;
+            
+            // Apply position and flip for first bird
+            birdElement1.style.left = (bird1X - 45) + 'px';
+            birdElement1.style.top = (bird1Y - 40) + 'px';
+            
+            const container1 = birdElement1.querySelector('.bird-container');
+            if (container1) {
+                if (shouldFlap1 && !isFlapping1) {
+                    container1.classList.add('flapping');
+                    isFlapping1 = true;
+                } else if (!shouldFlap1 && isFlapping1) {
+                    container1.classList.remove('flapping');
+                    isFlapping1 = false;
+                }
+                container1.style.transform = `scaleX(${scaleX1})`;
+            }
+            
+            // === SECOND BIRD (follows first bird) ===
+            const speed2 = 0.08; // Slower to create trailing effect
+            const followDistance = 100; // Distance to maintain behind first bird
+            
+            // Calculate target position behind first bird
+            const targetX2 = bird1X - (scaleX1 * followDistance);
+            const targetY2 = bird1Y + 30; // Slightly below
+            
+            bird2X += (targetX2 - bird2X) * speed2;
+            bird2Y += (targetY2 - bird2Y) * speed2;
+            
+            // Calculate movement speed for flapping
+            const deltaX2 = bird2X - prevBird2X;
+            const deltaY2 = bird2Y - prevBird2Y;
+            const movementSpeed2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
+            const shouldFlap2 = movementSpeed2 > 0.3; // More sensitive for smaller bird
+            
+            // Calculate direction for flipping (follow first bird's direction)
+            const scaleX2 = scaleX1; // Same direction as first bird
+            
+            // Apply position and flip for second bird
+            birdElement2.style.left = (bird2X - 36) + 'px'; // Adjusted for bigger size (40%)
+            birdElement2.style.top = (bird2Y - 32) + 'px';
+            
+            const container2 = birdElement2.querySelector('.bird-container');
+            if (container2) {
+                if (shouldFlap2 && !isFlapping2) {
+                    container2.classList.add('flapping');
+                    isFlapping2 = true;
+                } else if (!shouldFlap2 && isFlapping2) {
+                    container2.classList.remove('flapping');
+                    isFlapping2 = false;
+                }
+                container2.style.transform = `scaleX(${scaleX2})`;
+            }
+            
+            // Continue animation
+            requestAnimationFrame(animateBirds);
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initBirdCursor();
+            resetTransitionBirds();
+            
+            // Skip intro if not first visit
+            if (document.referrer && document.referrer.includes(window.location.hostname)) {
+                document.querySelector('.welcome-message').style.display = 'none';
+                document.querySelector('.about-message').style.display = 'none';
+                
+                const aboutCard = document.querySelector('.about-card');
+                aboutCard.style.opacity = '1';
+                aboutCard.style.transform = 'translate(-50%, -50%) scale(1)';
+                aboutCard.style.animation = 'none';
+                
+                // Navbar stays hidden for manual control
+                
+                // Show arrows
+                const arrows = document.querySelectorAll('.nav-arrow');
+                arrows.forEach(arrow => {
+                    arrow.style.opacity = '1';
+                    arrow.style.animationPlayState = 'running';
+                });
+                
+                // Show arrow text
+                const arrowTexts = document.querySelectorAll('.arrow-text');
+                arrowTexts.forEach(text => {
+                    text.style.opacity = '1';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
